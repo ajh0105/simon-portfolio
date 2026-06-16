@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Developer — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; overflow:hidden; }
+body {
+  font-family: -apple-system, 'Inter', 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── macOS CURSORS ── */
+:root {
+  --cur-arrow:   url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='22' viewBox='0 0 16 22'%3E%3Cfilter id='sh'%3E%3CfeDropShadow dx='0.4' dy='0.6' stdDeviation='0.6' flood-opacity='0.35'/%3E%3C/filter%3E%3Cpath d='M2 1.5 L2 18 L5.5 14 L8.5 20.5 L10.5 19.5 L7.5 13 L13 13 Z' fill='white' stroke='%23111' stroke-width='1.3' stroke-linejoin='round' filter='url(%23sh)'/%3E%3C/svg%3E") 2 1;
+  --cur-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='24' viewBox='0 0 20 24'%3E%3Cfilter id='sh'%3E%3CfeDropShadow dx='0.4' dy='0.6' stdDeviation='0.6' flood-opacity='0.35'/%3E%3C/filter%3E%3Cpath d='M8 1.5 C8 0.7 8.7 0 9.5 0 C10.3 0 11 0.7 11 1.5 L11 11.2 C11.4 10.8 11.9 10.5 12.5 10.5 C13.4 10.5 14.1 11.1 14.2 12 C14.6 11.6 15.1 11.4 15.7 11.5 C16.4 11.6 17 12.2 17 13 L17 13.2 C17.4 13 17.9 12.9 18.4 13.1 C18.9 13.3 19.2 13.8 19.2 14.4 L19.2 16.8 C19.2 20.2 16.5 23 13.1 23 L11.5 23 C9.8 23 8.3 22.3 7.2 21.2 L3.2 17 C2.7 16.5 2.7 15.7 3.2 15.2 L3.5 14.9 C4.3 14.1 5.6 14.1 6.4 14.9 L8 16.5 Z' fill='white' stroke='%23111' stroke-width='1.2' stroke-linejoin='round' filter='url(%23sh)'/%3E%3C/svg%3E") 9 0;
+}
+*, *::before, *::after {
+  cursor: var(--cur-arrow), auto;
+}
+a, button, label, select,
+.tl, .sb-item, .dock-icon, .desk-icon,
+.filter-btn, .mb-menu, .mb-item.clickable,
+.nw-item, .skill-tag, [onclick],
+.proj-card, .cert-card, .exp-card {
+  cursor: var(--cur-pointer), pointer;
+}
+input, textarea, [contenteditable] {
+  cursor: text;
+}
+.win-titlebar {
+  cursor: var(--cur-arrow), default;
+}
+.win-titlebar.dragging,
+.win-titlebar.dragging * {
+  cursor: grabbing !important;
+}
+
+/* ── WALLPAPER ── */
+#wallpaper {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 110%, #f5b56a88 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 60%, #c25b8a55 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, #7b2d8b44 0%, transparent 60%),
+    linear-gradient(160deg, #0d0221 0%, #1e0a3c 20%, #4a1060 38%, #8b2a7a 52%, #c45a7a 63%, #e07848 75%, #f5a855 87%, #ffd89b 100%);
+}
+/* Subtle grid noise overlay */
+#wallpaper::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ── MENU BAR ── */
+#menubar {
+  position: fixed; top:0; left:0; right:0; z-index: 1000;
+  height: 28px;
+  display: flex; align-items: center;
+  padding: 0 12px;
+  gap: 4px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.mb-menu {
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,.85);
+  padding: 0 8px; height: 100%;
+  display: flex; align-items: center;
+  border-radius: 4px; cursor: default;
+  transition: background .15s;
+}
+.mb-menu:hover, .mb-menu.on { background: rgba(255,255,255,.15); color: #fff; }
+.mb-menu.app-name { font-weight: 600; color: #fff; }
+.mb-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 4px;
+}
+.mb-right .mb-item {
+  font-size: 12px;
+  color: rgba(255,255,255,.8);
+  display: flex; align-items: center; gap: 4px;
+  cursor: default;
+  padding: 0 7px; height: 28px; border-radius: 4px;
+  transition: background .15s;
+}
+.mb-item.clickable { cursor: pointer; }
+.mb-item.clickable:hover { background: rgba(255,255,255,.15); }
+.mb-item.active { background: rgba(255,255,255,.2); }
+
+/* ── DESKTOP ── */
+#desktop {
+  position: fixed;
+  inset: 28px 0 0 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+/* Desktop folder icons */
+.desk-icon {
+  position: absolute;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: pointer; padding: 6px 8px; border-radius: 6px;
+  transition: background .15s;
+  user-select: none; z-index: 10;
+}
+.desk-icon:hover { background: rgba(255,255,255,.18); }
+.desk-icon.selected { background: rgba(255,255,255,.22); }
+.desk-icon:active { transform: scale(.94); }
+.di-img {
+  width: 64px; height: 64px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+  transition: transform .15s;
+}
+.desk-icon:hover .di-img { transform: scale(1.06); }
+.di-label {
+  font-size: 11px; color: #fff; font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,.8);
+  text-align: center; max-width: 72px;
+  background: rgba(0,0,0,.3); border-radius: 3px; padding: 1px 4px;
+}
+
+/* ── MAIN WINDOW ── */
+.win {
+  position: absolute;
+  width: min(1100px, calc(100vw - 40px));
+  height: min(680px, calc(100vh - 140px));
+  background: rgba(242,242,247,.92);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-radius: 12px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.25),
+    0 30px 80px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.15) inset;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  /* position & opacity set by JS */
+}
+.win.maximized {
+  border-radius: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+/* Window Title Bar */
+.win-titlebar {
+  height: 52px; flex-shrink: 0;
+  background: rgba(235,235,240,.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  display: flex; align-items: center;
+  padding: 0 16px; gap: 8px;
+  position: relative;
+  cursor: default;
+  user-select: none;
+}
+.win-titlebar.dragging { cursor: grabbing; }
+.traffic { display: flex; gap: 8px; }
+.tl {
+  width: 13px; height: 13px; border-radius: 50%;
+  cursor: pointer; position: relative;
+  transition: filter .15s;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.tl.red   { background: #ff5f57; box-shadow: 0 0 0 .5px rgba(0,0,0,.15); }
+.tl.yel   { background: #febc2e; box-shadow: 0 0 0 .5px rgba(0,0,0,.15); }
+.tl.grn   { background: #28c840; box-shadow: 0 0 0 .5px rgba(0,0,0,.15); }
+/* traffic light symbols on hover */
+.tl .tl-sym {
+  font-size: 8px; font-weight: 900; line-height: 1;
+  color: rgba(0,0,0,0); transition: color .1s;
+  pointer-events: none;
+}
+.traffic:hover .tl.red .tl-sym { color: rgba(90,10,10,.7); }
+.traffic:hover .tl.yel .tl-sym { color: rgba(90,60,0,.7); }
+.traffic:hover .tl.grn .tl-sym { color: rgba(0,80,0,.7); }
+.win-title {
+  position: absolute; left:50%; transform:translateX(-50%);
+  font-size: 13px; font-weight: 600;
+  color: rgba(0,0,0,.7);
+  display: flex; align-items: center; gap: 6px;
+}
+.win-title-icon { font-size: 14px; }
+.win-toolbar-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 6px;
+}
+.win-btn {
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: none;
+  background: rgba(0,0,0,.08);
+  font-size: 11px; font-weight: 500;
+  color: rgba(0,0,0,.6);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background .15s;
+}
+.win-btn:hover { background: rgba(0,0,0,.14); }
+.win-btn.accent { background: #007AFF; color: #fff; }
+.win-btn.accent:hover { background: #0062cc; }
+
+/* Window Body */
+.win-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 200px; flex-shrink: 0;
+  background: rgba(210,210,220,.6);
+  border-right: 1px solid rgba(0,0,0,.1);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sb-section { padding: 8px 0; }
+.sb-section + .sb-section { border-top: 1px solid rgba(0,0,0,.06); }
+.sb-label {
+  padding: 4px 16px;
+  font-size: 11px; font-weight: 700;
+  color: rgba(0,0,0,.4);
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 16px;
+  border-radius: 6px;
+  margin: 1px 6px;
+  cursor: pointer;
+  transition: background .12s;
+  text-decoration: none;
+}
+.sb-item:hover { background: rgba(0,0,0,.06); }
+.sb-item.active { background: #007AFF; }
+.sb-item.active .sb-icon,
+.sb-item.active .sb-name { color: #fff !important; }
+.sb-icon { font-size: 14px; width: 18px; text-align: center; color: rgba(0,0,0,.5); filter: drop-shadow(0 0 0.5px rgba(0,0,0,.45)); }
+#nav-contact .sb-icon { filter: drop-shadow(0 0 1px rgba(0,0,0,.7)); }
+.sb-name { font-size: 13px; font-weight: 500; color: rgba(0,0,0,.7); }
+.sb-badge {
+  margin-left: auto;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  background: rgba(0,0,0,.12);
+  border-radius: 9px;
+  font-size: 10px; font-weight: 700;
+  color: rgba(0,0,0,.5);
+  display: flex; align-items: center; justify-content: center;
+}
+.sb-item.active .sb-badge { background: rgba(255,255,255,.3); color: #fff; }
+
+.sb-footer {
+  margin-top: auto;
+  padding: 12px 14px;
+  border-top: 1px solid rgba(0,0,0,.08);
+}
+.sb-profile {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px; border-radius: 8px;
+  background: rgba(255,255,255,.5);
+  border: 1px solid rgba(0,0,0,.06);
+}
+.sp-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg,#007AFF,#5e5ce6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.sp-name { font-size: 12px; font-weight: 600; color: rgba(0,0,0,.75); }
+.sp-role { font-size: 10px; color: rgba(0,0,0,.4); margin-top: 1px; }
+
+/* ── CONTENT PANES ── */
+.win-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fff;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,.2) transparent;
+}
+.win-content::-webkit-scrollbar { width: 6px; }
+.win-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); border-radius: 3px; }
+
+.pane { display: none; height: 100%; }
+.pane.active { display: block; }
+
+/* ── PANE: OVERVIEW ── */
+.ov-hero {
+  background: linear-gradient(160deg, #f0f0f5 0%, #fff 60%);
+  padding: 3rem 2.5rem 2rem;
+  border-bottom: 1px solid #e5e5ea;
+}
+.ov-availability {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(52,199,89,.1);
+  border: 1px solid rgba(52,199,89,.25);
+  border-radius: 980px;
+  padding: 4px 12px;
+  font-size: 12px; font-weight: 600; color: #1c8a3e;
+  margin-bottom: 1.5rem;
+}
+.av-dot {
+  width: 7px; height: 7px; background: #34c759; border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(52,199,89,.4)} 50%{box-shadow:0 0 0 5px rgba(52,199,89,0)} }
+.ov-h1 {
+  font-size: 2.6rem; font-weight: 800;
+  letter-spacing: -.04em; line-height: 1.05;
+  color: #1d1d1f;
+  margin-bottom: .8rem;
+}
+.ov-h1 .ov-accent { color: #007AFF; }
+.ov-h1 .ov-thin  { font-weight: 300; color: #6e6e73; }
+.ov-sub {
+  font-size: 15px; color: #6e6e73; line-height: 1.7;
+  max-width: 560px; margin-bottom: 1.8rem;
+  font-weight: 400;
+}
+.ov-sub strong { color: #1d1d1f; font-weight: 500; }
+.ov-cta { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 2rem; }
+.ios-btn {
+  padding: 8px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  border: none; cursor: pointer; font-family: inherit;
+  transition: all .2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.ios-btn.filled { background: #007AFF; color: #fff; }
+.ios-btn.filled:hover { background: #0062cc; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,122,255,.35); }
+.ios-btn.ghost { background: rgba(0,0,0,.06); color: #1d1d1f; }
+.ios-btn.ghost:hover { background: rgba(0,0,0,.1); }
+
+.ov-stats {
+  display: flex; gap: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e5ea;
+}
+.ov-stat .val {
+  font-size: 1.8rem; font-weight: 800;
+  letter-spacing: -.04em; color: #1d1d1f; line-height: 1;
+}
+.ov-stat .val sup { font-size: .55em; vertical-align: super; }
+.ov-stat .lbl { font-size: 11px; color: #8e8e93; margin-top: 3px; font-weight: 500; }
+
+/* Widget row */
+.ov-widgets {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 1px;
+  background: #e5e5ea;
+  border-top: 1px solid #e5e5ea;
+}
+.widget {
+  background: #fff;
+  padding: 1.2rem 1.4rem;
+  cursor: default;
+  transition: background .15s;
+}
+.widget:hover { background: #f9f9fb; }
+.w-icon { font-size: 1.5rem; margin-bottom: .5rem; }
+.w-val {
+  font-size: 1.5rem; font-weight: 800;
+  letter-spacing: -.04em; color: #1d1d1f; line-height: 1;
+  margin-bottom: 3px;
+}
+.w-label { font-size: 11px; color: #8e8e93; font-weight: 500; letter-spacing: .02em; }
+.w-sub { font-size: 11px; color: #aeaeb2; margin-top: 3px; }
+
+/* Spotlight strip */
+.spotlight-strip {
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(90deg, #f0f0f5, #f7f7fa);
+  border-bottom: 1px solid #e5e5ea;
+  display: flex; align-items: center; gap: 1rem;
+}
+.ss-label { font-size: 11px; font-weight: 700; color: #8e8e93; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.ss-tags { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ss-tag {
+  padding: 3px 10px; border-radius: 6px;
+  background: rgba(0,122,255,.08);
+  border: 1px solid rgba(0,122,255,.18);
+  font-size: 11px; font-weight: 600; color: #007AFF;
+}
+
+/* ── PANE: ABOUT ── */
+.about-pane { padding: 2rem 2.5rem; }
+.ap-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 2rem; align-items: start; margin-bottom: 2rem; }
+.ap-profile {
+  background: linear-gradient(135deg,#f0f0f5,#fff);
+  border: 1px solid #e5e5ea;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+.ap-avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  overflow: hidden; margin: 0 auto 1rem;
+  box-shadow: 0 4px 20px rgba(0,122,255,.25);
+}
+.ap-avatar img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.ap-name { font-size: 17px; font-weight: 700; color: #1d1d1f; margin-bottom: 3px; }
+.ap-title { font-size: 12px; color: #8e8e93; margin-bottom: 1rem; }
+.ap-tag-list { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 1rem; }
+.ap-tag {
+  padding: 3px 9px; border-radius: 6px;
+  background: rgba(0,0,0,.06);
+  font-size: 11px; font-weight: 600; color: #3c3c43;
+}
+.ap-divider { height: 1px; background: #e5e5ea; margin: 1rem 0; }
+.ap-info-row { display: flex; justify-content: space-between; padding: 4px 0; }
+.ap-info-key { font-size: 12px; color: #8e8e93; }
+.ap-info-val { font-size: 12px; font-weight: 600; color: #1d1d1f; }
+.ap-info-val.green { color: #34c759; }
+
+.ap-bio-block {}
+.pane-title { font-size: 18px; font-weight: 700; color: #1d1d1f; margin-bottom: .8rem; letter-spacing: -.02em; }
+.pane-body { font-size: 14px; color: #6e6e73; line-height: 1.75; margin-bottom: 1.2rem; }
+.pane-body strong { color: #1d1d1f; font-weight: 600; }
+
+.timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+.timeline::before {
+  content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px;
+  width: 1px; background: #e5e5ea;
+}
+.tl-item { display: flex; gap: 1rem; padding: .7rem 0; position: relative; }
+.tl-dot {
+  width: 15px; height: 15px; border-radius: 50%;
+  background: #007AFF; border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #007AFF;
+  flex-shrink: 0; margin-top: 3px; z-index: 1;
+}
+.tl-dot.muted { background: #c7c7cc; box-shadow: 0 0 0 1px #c7c7cc; }
+.tl-period { font-size: 11px; color: #8e8e93; font-weight: 600; white-space: nowrap; padding-top: 3px; width: 80px; flex-shrink: 0; }
+.tl-content {}
+.tl-role { font-size: 13px; font-weight: 700; color: #1d1d1f; }
+.tl-place { font-size: 12px; color: #8e8e93; margin-top: 1px; }
+
+/* ── PANE: PROJECTS ── */
+.proj-toolbar {
+  padding: .8rem 1.5rem;
+  background: #f9f9fb;
+  border-bottom: 1px solid #e5e5ea;
+  display: flex; align-items: center; gap: .5rem;
+}
+.filter-btn {
+  padding: 4px 12px; border-radius: 6px; border: none;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+  background: rgba(0,0,0,.06); color: #3c3c43;
+}
+.filter-btn:hover { background: rgba(0,0,0,.1); }
+.filter-btn.on { background: #007AFF; color: #fff; }
+
+.proj-list { padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.proj-row {
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  gap: .8rem; align-items: center;
+  padding: .8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #e5e5ea;
+  background: #fff;
+  cursor: pointer;
+  transition: all .2s;
+}
+.proj-row:hover { background: #f0f5ff; border-color: #b8d0ff; }
+.pr-icon {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.pi1 { background: linear-gradient(135deg,#e8f0fe,#c7d7fc); }
+.pi2 { background: linear-gradient(135deg,#e8fbf2,#c4f0d8); }
+.pi3 { background: linear-gradient(135deg,#f5f0fe,#dcc7fc); }
+.pi4 { background: linear-gradient(135deg,#fef5e8,#fce0c7); }
+.pi5 { background: linear-gradient(135deg,#fee8f0,#fcc7d7); }
+.pi6 { background: linear-gradient(135deg,#e8f5fe,#c7e0fc); }
+.pi7 { background: linear-gradient(135deg,#e8fef5,#c7fce0); }
+.pi8 { background: linear-gradient(135deg,#fef8e8,#fcedc7); }
+.pi9 { background: linear-gradient(135deg,#fde8fe,#f0c7fc); }
+.pr-info {}
+.pr-name { font-size: 13px; font-weight: 700; color: #1d1d1f; margin-bottom: 2px; }
+.pr-desc { font-size: 12px; color: #8e8e93; }
+.pr-tags { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+.pr-tag {
+  padding: 1px 7px; border-radius: 4px;
+  background: rgba(0,0,0,.05); font-size: 10px;
+  font-weight: 600; color: #6e6e73;
+}
+.pr-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.pr-stat { font-size: 12px; font-weight: 700; color: #1d1d1f; }
+.pr-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px;
+  border-radius: 6px; white-space: nowrap;
+}
+.badge-live { background: rgba(52,199,89,.12); color: #1c8a3e; }
+.badge-done { background: rgba(0,122,255,.1); color: #007AFF; }
+.badge-dev  { background: rgba(255,159,10,.12); color: #a05000; }
+
+.pr-btn-group { display: flex; gap: 4px; margin-top: 4px; }
+.pr-btn {
+  font-size: 10px; font-weight: 700; padding: 3px 9px;
+  border-radius: 6px; border: none; cursor: pointer;
+  font-family: inherit; white-space: nowrap;
+  transition: all .15s;
+}
+.pr-btn-live { background: rgba(0,122,255,.1); color: #007AFF; }
+.pr-btn-live:hover { background: rgba(0,122,255,.2); }
+.pr-btn-ai { background: rgba(255,159,10,.12); color: #a05000; }
+.pr-btn-ai:hover { background: rgba(255,159,10,.22); }
+
+/* ── PROJECT DETAIL MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 3000;
+  background: rgba(0,0,0,.45);
+  display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.show { display: flex; }
+.modal-box {
+  width: min(440px, calc(100vw - 40px));
+  max-height: calc(100vh - 80px);
+  background: rgba(246,246,248,.97);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.3), 0 30px 80px rgba(0,0,0,.5);
+  overflow: hidden;
+  transform: scale(.92); opacity: 0;
+  animation: modalPop .22s cubic-bezier(.16,1,.3,1) forwards;
+  display: flex; flex-direction: column;
+}
+@keyframes modalPop { to { transform: scale(1); opacity: 1; } }
+.modal-header {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 1.3rem 1.4rem 1rem;
+  border-bottom: 1px solid #e5e5ea;
+  flex-shrink: 0;
+}
+.modal-icon {
+  width: 44px; height: 44px; border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.modal-header-text { flex: 1; min-width: 0; }
+.modal-title { font-size: 15px; font-weight: 700; color: #1d1d1f; line-height: 1.35; margin-bottom: 6px; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.modal-tag { padding: 2px 8px; border-radius: 5px; background: rgba(0,0,0,.06); font-size: 10px; font-weight: 600; color: #6e6e73; }
+.modal-close {
+  width: 24px; height: 24px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,.06); color: #6e6e73;
+  font-size: 12px; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.modal-close:hover { background: rgba(0,0,0,.12); }
+.modal-body { padding: 1rem 1.4rem; overflow-y: auto; }
+.modal-desc { font-size: 13px; color: #3c3c43; line-height: 1.7; }
+.modal-footer { display: flex; gap: 8px; padding: 0 1.4rem 1.3rem; flex-shrink: 0; }
+.modal-btn {
+  flex: 1; padding: 9px; border-radius: 9px; border: none;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+  transition: all .2s;
+}
+.modal-btn-live { background: #007AFF; color: #fff; }
+.modal-btn-live:hover { background: #0062cc; }
+.modal-btn-ai { background: rgba(255,159,10,.14); color: #a05000; }
+.modal-btn-ai:hover { background: rgba(255,159,10,.24); }
+
+/* ── PANE: SKILLS ── */
+.skills-pane { padding: 1.5rem 2.5rem; }
+.sk-hero {
+  background: linear-gradient(135deg,#f0f5ff,#f5f0ff);
+  border: 1px solid #e5e5ea;
+  border-radius: 12px; padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.5rem; align-items: center;
+}
+.sk-hero-text .pane-title { margin-bottom: .4rem; }
+.sk-hero-text p { font-size: 13px; color: #6e6e73; line-height: 1.65; }
+.sk-hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+.sk-stat {
+  background: #fff; border-radius: 10px; padding: .9rem;
+  border: 1px solid #e5e5ea; text-align: center;
+}
+.sk-stat .sv {
+  font-size: 1.5rem; font-weight: 800;
+  letter-spacing: -.04em; color: #1d1d1f; line-height: 1;
+}
+.sk-stat .sl { font-size: 10px; color: #8e8e93; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-top: 3px; }
+
+.sk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.sk-card {
+  background: #f9f9fb; border: 1px solid #e5e5ea;
+  border-radius: 12px; padding: 1.1rem;
+  transition: all .2s;
+}
+.sk-card:hover { border-color: #007AFF; background: #f0f5ff; }
+.sk-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: .9rem; }
+.sk-card-icon {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .85rem;
+}
+.sci1 { background: rgba(0,122,255,.12); }
+.sci2 { background: rgba(52,199,89,.12); }
+.sci3 { background: rgba(255,159,10,.12); }
+.sci4 { background: rgba(94,92,230,.12); }
+.sk-card-name { font-size: 12px; font-weight: 700; color: #1d1d1f; letter-spacing: .02em; text-transform: uppercase; }
+.sk-items { display: flex; flex-wrap: wrap; gap: 5px; }
+.sk-chip {
+  padding: 3px 9px; border-radius: 6px;
+  background: rgba(0,0,0,.06);
+  font-size: 11px; font-weight: 600; color: #3c3c43;
+  transition: all .15s;
+}
+.sk-chip:hover { background: rgba(0,122,255,.1); color: #007AFF; }
+
+.sk-bars { margin-top: 1.2rem; }
+.sk-bar-title { font-size: 12px; font-weight: 700; color: #3c3c43; margin-bottom: .6rem; padding-bottom: .4rem; border-bottom: 1px solid #e5e5ea; }
+.skb { margin-bottom: .6rem; }
+.skb-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.skb-name { font-size: 12px; font-weight: 500; color: #3c3c43; }
+.skb-pct { font-size: 11px; color: #8e8e93; }
+.skb-track { height: 4px; background: #e5e5ea; border-radius: 2px; overflow: hidden; }
+.skb-fill { height: 100%; border-radius: 2px; transform-origin: left; animation: grow 1.4s ease-out forwards; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.bf1 { background: linear-gradient(90deg,#007AFF,#5e5ce6); }
+.bf2 { background: linear-gradient(90deg,#34c759,#248a3d); }
+.bf3 { background: linear-gradient(90deg,#ff9f0a,#c93); }
+.bf4 { background: linear-gradient(90deg,#5e5ce6,#9b59b6); }
+
+/* ── PANE: CONTACT ── */
+.contact-pane {
+  padding: 2rem 2.5rem;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem; height: 100%;
+}
+.cont-info {}
+.cont-tagline {
+  font-size: 1.6rem; font-weight: 800;
+  letter-spacing: -.04em; line-height: 1.1;
+  color: #1d1d1f; margin-bottom: .8rem;
+}
+.cont-tagline em { font-style: italic; color: #007AFF; }
+.cont-body { font-size: 13px; color: #6e6e73; line-height: 1.7; margin-bottom: 1.5rem; }
+.cont-links { display: flex; flex-direction: column; gap: .5rem; }
+.cont-link {
+  display: flex; align-items: center; gap: .8rem;
+  padding: .65rem .9rem;
+  background: #f9f9fb; border: 1px solid #e5e5ea;
+  border-radius: 10px; cursor: pointer; text-decoration: none;
+  transition: all .2s; color: #1d1d1f;
+}
+.cont-link:hover { background: #f0f5ff; border-color: #b8d0ff; }
+.cl-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: rgba(0,122,255,.1); border: 1px solid rgba(0,122,255,.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem; flex-shrink: 0;
+  transition: background .2s;
+}
+.cont-link:hover .cl-icon { background: rgba(0,122,255,.18); }
+.cl-text {}
+.cl-type { font-size: 10px; color: #8e8e93; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.cl-val { font-size: 13px; font-weight: 600; color: #1d1d1f; }
+.cl-arr { margin-left: auto; font-size: 12px; color: #c7c7cc; transition: transform .2s; }
+.cont-link:hover .cl-arr { color: #007AFF; transform: translateX(3px); }
+
+.cont-form {}
+.cf-title { font-size: 15px; font-weight: 700; color: #1d1d1f; margin-bottom: 1rem; }
+.ios-field-group { margin-bottom: .75rem; }
+.ios-label { font-size: 11px; font-weight: 700; color: #8e8e93; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; display: block; }
+.ios-input {
+  width: 100%; padding: 9px 12px;
+  background: #f9f9fb; border: 1.5px solid #e5e5ea;
+  border-radius: 8px; font-family: inherit;
+  font-size: 13px; color: #1d1d1f;
+  transition: border-color .2s, background .2s;
+}
+.ios-input:focus { outline: none; border-color: #007AFF; background: #f0f5ff; }
+.ios-input::placeholder { color: #aeaeb2; }
+textarea.ios-input { resize: none; height: 80px; }
+.ios-submit {
+  width: 100%; padding: 10px; background: #007AFF; color: #fff;
+  border: none; border-radius: 9px; font-family: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  transition: all .25s; margin-top: 4px;
+}
+.ios-submit:hover { background: #0062cc; box-shadow: 0 4px 14px rgba(0,122,255,.35); }
+
+/* ── DOCK ── */
+#dock {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 1000;
+  display: flex; align-items: flex-end; gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.22);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.3), 0 1px 0 rgba(255,255,255,.4) inset;
+}
+#dock::before {
+  content: ''; position: absolute;
+  bottom: -8px; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 3px; border-radius: 2px;
+  background: rgba(255,255,255,.4);
+}
+.dock-sep {
+  width: 1px; height: 40px; background: rgba(255,255,255,.3);
+  align-self: center; margin: 0 4px;
+}
+.dock-icon {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; position: relative;
+  transition: transform .2s cubic-bezier(.16,1,.3,1);
+}
+.dock-icon:hover { transform: translateY(-12px) scale(1.2); }
+.dock-icon:hover .dock-label { opacity: 1; transform: translateY(0); }
+.di-wrap {
+  width: 52px; height: 52px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  transition: box-shadow .2s;
+}
+.dock-icon:hover .di-wrap { box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+.di1 { background: linear-gradient(145deg,#4facfe,#00f2fe); }
+.di2 { background: linear-gradient(145deg,#a8e6cf,#3eb489); }
+.di3 { background: linear-gradient(145deg,#c3a6ff,#7b5ea7); }
+.di4 { background: linear-gradient(145deg,#ffd89b,#ff9a44); }
+.di5 { background: linear-gradient(145deg,#f093fb,#f5576c); }
+.dock-label {
+  position: absolute; bottom: calc(100% + 10px);
+  background: rgba(0,0,0,.72); color: #fff;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 9px; border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .15s, transform .15s;
+  pointer-events: none;
+}
+.dock-label::after {
+  content: ''; position: absolute;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: rgba(0,0,0,.72);
+}
+.dock-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,.8); margin-top: 4px;
+  opacity: 0; transition: opacity .2s;
+}
+.dock-icon.active .dock-dot { opacity: 1; }
+
+/* ── NOTIFICATION WIDGET ── */
+.notif-widget {
+  position: fixed; top: 36px; right: 8px; z-index: 2000;
+  width: 300px;
+  background: rgba(242,242,247,.92);
+  backdrop-filter: blur(30px) saturate(200%);
+  -webkit-backdrop-filter: blur(30px) saturate(200%);
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 14px;
+  padding: 0;
+  box-shadow: 0 12px 40px rgba(0,0,0,.35), 0 1px 0 rgba(255,255,255,.5) inset;
+  display: none;
+  overflow: hidden;
+}
+.notif-widget.show {
+  display: block;
+  animation: notifDrop .22s cubic-bezier(.16,1,.3,1) forwards;
+}
+@keyframes notifDrop {
+  from { transform: scale(.94) translateY(-6px); opacity:0; }
+  to   { transform: scale(1) translateY(0); opacity:1; }
+}
+.nw-header {
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nw-header-title { font-size: 13px; font-weight: 700; color: #1d1d1f; }
+.nw-clear { font-size: 11px; color: #007AFF; cursor: pointer; font-weight: 600; }
+.nw-clear:hover { opacity: .7; }
+.nw-items { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.nw-item {
+  background: rgba(255,255,255,.7);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.nw-item:hover { background: rgba(255,255,255,.9); }
+.nw-item.nw-pinned {
+  background: rgba(0,122,255,.08);
+  border: 1px solid rgba(0,122,255,.18);
+}
+.nw-item.nw-pinned:hover { background: rgba(0,122,255,.15); }
+.nw-tip { font-size: 11.5px; color: #3c3c43; margin-top: 4px; line-height: 1.5; }
+.nw-item-head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.nw-icon { width: 20px; height: 20px; border-radius: 5px; background: #007AFF; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.nw-app-name { font-size: 11px; font-weight: 700; color: #3c3c43; }
+.nw-time { margin-left: auto; font-size: 11px; color: #aeaeb2; }
+.nw-title { font-size: 13px; font-weight: 700; color: #1d1d1f; margin-bottom: 2px; }
+.nw-body { font-size: 12px; color: #6e6e73; line-height: 1.45; }
+.nw-app { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.nw-icon { width: 20px; height: 20px; border-radius: 5px; background: #007AFF; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+.nw-app-name { font-size: 11px; font-weight: 700; color: #3c3c43; }
+.nw-time { margin-left: auto; font-size: 11px; color: #aeaeb2; }
+.nw-title { font-size: 13px; font-weight: 700; color: #1d1d1f; margin-bottom: 3px; }
+.nw-body { font-size: 12px; color: #6e6e73; line-height: 1.5; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .win { width: calc(100vw - 16px); height: calc(100vh - 120px); }
+  .sidebar { width: 160px; }
+  .contact-pane { grid-template-columns: 1fr; }
+  .sk-grid { grid-template-columns: 1fr; }
+  .ap-grid { grid-template-columns: 1fr; }
+  .ov-widgets { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 540px) {
+  .sidebar { display: none; }
+  .ov-widgets { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- WALLPAPER -->
+<div id="wallpaper"></div>
+
+<!-- MENU BAR -->
+<div id="menubar">
+  <div class="mb-menu app-name">Simon-Ahn</div>
+  <div class="mb-right">
+    <div class="mb-item">📶</div>
+    <div class="mb-item">🔋 100%</div>
+    <div class="mb-item clickable" id="notifBtn" title="Notification Center">🔔</div>
+    <div class="mb-item" id="clock">--:--</div>
+  </div>
+</div>
+
+<!-- NOTIFICATION WIDGET -->
+<div class="notif-widget" id="notifWidget">
+  <div class="nw-header">
+    <span class="nw-header-title">알림 센터</span>
+    <span class="nw-clear" id="nwClear">모두 지우기</span>
+  </div>
+  <div class="nw-items">
+    <div class="nw-item nw-pinned" id="nwPinned">
+      <div class="nw-item-head">
+        <div class="nw-icon" style="background:#007AFF">📌</div>
+        <div class="nw-app-name">Simon-Ahn Portfolio</div>
+        <div class="nw-time">고정</div>
+      </div>
+      <div class="nw-title">사용 안내</div>
+      <div class="nw-body">
+        <div class="nw-tip">👆 이 알림을 누르면 알림창이 닫힙니다</div>
+        <div class="nw-tip">🖱️ 창 상단을 드래그해서 자유롭게 이동할 수 있습니다</div>
+      </div>
+    </div>
+    <div class="nw-item">
+      <div class="nw-item-head">
+        <div class="nw-icon">💼</div>
+        <div class="nw-app-name">Portfolio</div>
+        <div class="nw-time">방금</div>
+      </div>
+      <div class="nw-title">현재 구직 중</div>
+      <div class="nw-body">교통 · 환경 · 수자원 · 자연재해 분야 AI 풀스택 개발자</div>
+    </div>
+    <div class="nw-item">
+      <div class="nw-item-head">
+        <div class="nw-icon" style="background:#ff9f0a">⭐</div>
+        <div class="nw-app-name">GitHub</div>
+        <div class="nw-time">1시간 전</div>
+      </div>
+      <div class="nw-title">희망 분야</div>
+      <div class="nw-body">토목 및 수자원 경력과 개발 분야를 융합한 교통, 환경, 재해 분야 개발을 희망합니다.</div>
+    </div>
+    <div class="nw-item">
+      <div class="nw-item-head">
+        <div class="nw-icon" style="background:#34c759">💬</div>
+        <div class="nw-app-name">Mail</div>
+        <div class="nw-time">5분 전</div>
+      </div>
+      <div class="nw-title">전향 이유</div>
+      <div class="nw-body">어릴적 꿈인 개발자가 되기 위해 새로운 도전을 시작합니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div id="desktop">
+
+  <!-- DESKTOP FOLDER ICONS (top-right, like macOS) -->
+  <div class="desk-icon" id="folderPortfolio" style="right:20px; top:16px" onclick="openWinFromIcon(this)">
+    <div class="di-img" style="background:linear-gradient(145deg,#4facfe,#00f2fe)">📁</div>
+    <div class="di-label">Simon-Ahn</div>
+  </div>
+  <div class="desk-icon" id="folderProjects" style="right:20px; top:110px" onclick="openWinFromIcon(this,'projects')">
+    <div class="di-img" style="background:linear-gradient(145deg,#a8e6cf,#3eb489)">🚀</div>
+    <div class="di-label">Projects</div>
+  </div>
+  <div class="desk-icon" id="folderResume" style="right:20px; top:204px" onclick="openWinFromIcon(this,'contact')">
+    <div class="di-img" style="background:linear-gradient(145deg,#ffd89b,#ff9a44)">📄</div>
+    <div class="di-label">Resume.pdf</div>
+  </div>
+  <div class="desk-icon" id="folderSkills" style="right:20px; top:298px" onclick="openWinFromIcon(this,'skills')">
+    <div class="di-img" style="background:linear-gradient(145deg,#c3a6ff,#7b5ea7)">🛠️</div>
+    <div class="di-label">Skills</div>
+  </div>
+
+  <!-- MAIN WINDOW -->
+  <div class="win" id="mainWin">
+    <!-- Title Bar -->
+    <div class="win-titlebar">
+      <div class="traffic">
+        <div class="tl red"  id="tlRed"><span class="tl-sym">✕</span></div>
+        <div class="tl yel"  id="tlYel"><span class="tl-sym">−</span></div>
+        <div class="tl grn"  id="tlGrn"><span class="tl-sym">+</span></div>
+      </div>
+      <div class="win-title">
+        <span class="win-title-icon" id="winIcon">🏠</span>
+        <span id="winTitle">AI Developer Portfolio</span>
+      </div>
+      <div class="win-toolbar-right">
+        <button class="win-btn">Share ↑</button>
+        <button class="win-btn accent" onclick="switchPane('contact')">Hire Me</button>
+      </div>
+    </div>
+
+    <!-- Window Body -->
+    <div class="win-body">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sb-section">
+          <div class="sb-label">Portfolio</div>
+          <div class="sb-item active" id="nav-overview" onclick="switchPane('overview')">
+            <span class="sb-icon">🏠</span>
+            <span class="sb-name">Overview</span>
+          </div>
+          <div class="sb-item" id="nav-about" onclick="switchPane('about')">
+            <span class="sb-icon">👤</span>
+            <span class="sb-name">About Me</span>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-label">Work</div>
+          <div class="sb-item" id="nav-projects" onclick="switchPane('projects')">
+            <span class="sb-icon">🚀</span>
+            <span class="sb-name">Projects</span>
+            <span class="sb-badge" id="projCount">9</span>
+          </div>
+          <div class="sb-item" id="nav-skills" onclick="switchPane('skills')">
+            <span class="sb-icon">🛠️</span>
+            <span class="sb-name">Skills</span>
+          </div>
+        </div>
+        <div class="sb-section">
+          <div class="sb-label">Connect</div>
+          <div class="sb-item" id="nav-contact" onclick="switchPane('contact')">
+            <span class="sb-icon">💬</span>
+            <span class="sb-name">Contact</span>
+          </div>
+        </div>
+        <div class="sb-footer">
+          <div class="sb-profile">
+            <div class="sp-avatar">🧑‍💻</div>
+            <div>
+              <div class="sp-name">Simon-Ahn</div>
+              <div class="sp-role">교통·환경 AI 개발자<br>구직 중</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="win-content" id="winContent">
+
+        <!-- OVERVIEW PANE -->
+        <div class="pane active" id="pane-overview">
+          <div class="ov-hero">
+            <div class="ov-availability">
+              <div class="av-dot"></div>
+              구직 중 — 교통 · 환경 · 수자원 · 자연재해 분야 AI + X 개발자
+            </div>
+            <h1 class="ov-h1">
+              Full-Stack AI<br>
+              <span class="ov-accent">Developer</span>
+              <span class="ov-thin"> · Simon-Ahn</span>
+            </h1>
+            <p class="ov-sub">
+              <strong>분야 확장을 위한 AI 개발자 전향</strong> · 현장 도메인 지식 + AI 기술의 결합.<br>
+              Spring Boot · FastAPI · PostgrSQL · Vue.js로 실제 동작하는 풀스택 AI 서비스를 <br>만듭니다.
+            </p>
+            <div class="ov-cta">
+              <button class="ios-btn filled" onclick="switchPane('projects')">View Projects →</button>
+              <button class="ios-btn ghost" onclick="switchPane('contact')">Get in Touch</button>
+              <button class="ios-btn ghost">↓ Download CV</button>
+            </div>
+            <div class="ov-stats">
+              <div class="ov-stat"><div class="val">10<sup>+</sup></div><div class="lbl">Projects</div></div>
+              <div class="ov-stat"><div class="val">6<sup>mo</sup></div><div class="lbl">AI 과정 수료</div></div>
+              <div class="ov-stat"><div class="val">4</div><div class="lbl">관심 도메인</div></div>
+            </div>
+          </div>
+
+          <div class="spotlight-strip">
+            <span class="ss-label">Tech Stack</span>
+            <div class="ss-tags">
+              <span class="ss-tag">Spring Boot</span><span class="ss-tag">FastAPI</span>
+              <span class="ss-tag">Python</span><span class="ss-tag">Vue.js $ Vite</span>
+              <span class="ss-tag">YOLO</span><span class="ss-tag">PyTorch</span>
+              <span class="ss-tag">TensorFlow</span><span class="ss-tag">PostgreSQL</span>
+              <span class="ss-tag">Docker</span><span class="ss-tag">JPA</span>
+              <span class="ss-tag">Chart.js</span><span class="ss-tag">Tailwind.css</span>
+              <span class="ss-tag">Pinia</span>
+            </div>
+          </div>
+
+          <div class="ov-widgets">
+            <div class="widget">
+              <div class="w-icon">🕳️</div>
+              <div class="w-val">AI</div>
+              <div class="w-label">포트홀 탐지</div>
+              <div class="w-sub">YOLO · FastAPI · Dashboard</div>
+            </div>
+            <div class="widget">
+              <div class="w-icon">🚗</div>
+              <div class="w-val">AI</div>
+              <div class="w-label">교통 분석 플랫폼</div>
+              <div class="w-sub">YOLO · Spring Boot · Vue.js</div>
+            </div>
+            <div class="widget">
+              <div class="w-icon">🚦</div>
+              <div class="w-val">CRNN</div>
+              <div class="w-label">스마트 톨링</div>
+              <div class="w-sub">OCR · Jetson · GPS 요금 부과</div>
+            </div>
+            <div class="widget">
+              <div class="w-icon">🌐</div>
+              <div class="w-val">Full</div>
+              <div class="w-label">Stack 웹 개발</div>
+              <div class="w-sub">Spring Boot · Vue.js · Vite</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABOUT PANE -->
+        <div class="pane" id="pane-about">
+          <div class="about-pane">
+            <div class="ap-grid">
+              <div class="ap-profile">
+                <div class="ap-avatar"><img src="my-notion-face-transparent.png" alt="Simon-Ahn"></div>
+                <div class="ap-name">Simon-Ahn</div>
+                <div class="ap-title">Full-Stack AI Developer</div>
+                <div class="ap-tag-list">
+                  <span class="ap-tag">Spring Boot</span><span class="ap-tag">FastAPI</span>
+                  <span class="ap-tag">PostgreSQL</span><span class="ap-tag">Python</span>
+                  <span class="ap-tag">Vue.js</span>
+                </div>
+                <div class="ap-divider"></div>
+                <div class="ap-info-row"><span class="ap-info-key">관심 분야</span><span class="ap-info-val">교통 · 환경 · 수자원</span></div>
+                <div class="ap-info-row"><span class="ap-info-key">교육</span><span class="ap-info-val">MBC 국비 AI 과정 수료</span></div>
+                <div class="ap-info-row"><span class="ap-info-key">배경</span><span class="ap-info-val">분야 융복합을 위한 AI 전향</span></div>
+                <div class="ap-info-row"><span class="ap-info-key">상태</span><span class="ap-info-val green">● 구직 중</span></div>
+              </div>
+              <div class="ap-bio-block">
+                <div class="pane-title">About Me</div>
+                <p class="pane-body">
+                  MBC 컴퓨터 학원 AI 풀스택 국비 과정(6개월)을 수료하며 Spring Boot, FastAPI, PostgreSQL, Vue.js, PyTorch, tesorFlow, YOLO, openCV 등을 활용한 <strong>10개 이상의 프로젝트</strong>를 완성했습니다. Claude Code + Codex를 병렬 활용한 바이브코딩으로 아키텍처 설계부터 구현까지 빠르게 처리합니다.
+                </p>
+                <div class="pane-title" style="margin-top:1.2rem">경력 및 교육</div>
+                <div class="timeline">
+                  <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-period">2026.07</div>
+                    <div class="tl-content">
+                      <div class="tl-role">MBC 컴퓨터 학원 AI 풀스택 과정 수료</div>
+                      <div class="tl-place">Spring Boot · FastAPI · AI · Vue.js · PostgreSQL · JPA</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-period">2025.12</div>
+                    <div class="tl-content">
+                      <div class="tl-role">AI 개발자 전향 — 국비 과정 입학</div>
+                      <div class="tl-place">토목·환경 분야와 IT/AI+X 융합을 위해 커리어 전환</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot muted"></div>
+                    <div class="tl-period">2017 – 2025</div>
+                    <div class="tl-content">
+                      <div class="tl-role">토목 · 수자원 · 환경 분야 연구 및 관리</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot muted"></div>
+                    <div class="tl-period">2023.03 – 10</div>
+                    <div class="tl-content">
+                      <div class="tl-role">도시환경재난관리전공 석사과정 · 재직 중 진학 후 자퇴</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot muted"></div>
+                    <div class="tl-period">2013 – 2018</div>
+                    <div class="tl-content">
+                      <div class="tl-role">토목환경공학과 학사 졸업</div>
+                    </div>
+                  </div>
+                  <div class="tl-item">
+                    <div class="tl-dot muted"></div>
+                    <div class="tl-period">2010 – 2013</div>
+                    <div class="tl-content">
+                      <div class="tl-role">정보통신과 졸업</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS PANE -->
+        <div class="pane" id="pane-projects">
+          <div class="proj-toolbar">
+            <button class="filter-btn on" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="개인">개인 프로젝트</button>
+            <button class="filter-btn" data-filter="팀">팀 프로젝트</button>
+            <button class="filter-btn" data-filter="ai">AI / Vision</button>
+            <button class="filter-btn" data-filter="웹앱">웹 앱</button>
+          </div>
+          <div class="proj-list">
+            <!-- 대표작 (항상 상단 고정) -->
+            <div class="proj-row" data-tags="개인 ai" data-featured="true" onclick="openProjectModal('porthole')">
+              <div class="pr-icon pi1">🕳️</div>
+              <div class="pr-info">
+                <div class="pr-name">AI 기반 포트홀 탐지 대시보드</div>
+                <div class="pr-desc">YOLOv8 실시간 포트홀 탐지 · FastAPI 백엔드 · Vue.js + Chart.js 대시보드로 통계 시각화</div>
+                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Chart.js</span></div>
+              </div>
+              <div class="pr-right">
+                <div class="pr-stat">개인</div>
+                <div class="pr-badge badge-live">● 대표작</div>
+                <div class="pr-btn-group">
+                  <!-- TODO: ajh0105.github.io/ai_porthole_detected 에 GitHub Pages 배포 후 확인 -->
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_porthole_detected/','_blank')">🔗 Live</button>
+                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/ai-porthole-detection','_blank')">🧪 AI 테스트</button>
+                </div>
+              </div>
+            </div>
+            <div class="proj-row" data-tags="팀 ai" data-featured="true" onclick="openProjectModal('tolling')">
+              <div class="pr-icon pi6">🚦</div>
+              <div class="pr-info">
+                <div class="pr-name">GPS와 번호판을 활용한 AI기반 차세대 스마트 톨링 시스템</div>
+                <div class="pr-desc">CRNN 기반 OCR 번호판 인식 → GPS 거리 계산 자동 요금 부과 · Jetson 엣지 AI · 웹 대시보드</div>
+                <div class="pr-tags"><span class="pr-tag">CRNN</span><span class="pr-tag">OCR</span><span class="pr-tag">Jetson</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Vue.js</span></div>
+              </div>
+              <div class="pr-right">
+                <div class="pr-stat">팀</div>
+                <div class="pr-badge badge-live">● 대표작</div>
+                <div class="pr-btn-group">
+                  <!-- TODO: 스마트 톨링 GitHub repo 업데이트 후 Pages 주소로 교체 -->
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://github.com/ajh0105','_blank')">🔗 Live</button>
+                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/smart-tolling','_blank')">🧪 AI 테스트</button>
+                </div>
+              </div>
+            </div>
+            <div class="proj-row" data-tags="개인 웹앱 ai" data-featured="true" onclick="openProjectModal('epit')">
+              <div class="pr-icon pi5">⚡</div>
+              <div class="pr-info">
+                <div class="pr-name">E-pit AI 기반 스마트 충전소 통합 관제 시스템</div>
+                <div class="pr-desc">현대차그룹 E-pit 충전 네트워크 관제 플랫폼 · YOLOv8 불법주차 감지 · LSTM 고장 예측(PHM) · XGBoost 교통 위험도 · STOMP WebSocket 실시간 대시보드</div>
+                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">LSTM</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Spring Boot</span><span class="pr-tag">Vue.js</span><span class="pr-tag">ECharts</span><span class="pr-tag">Docker</span></div>
+              </div>
+              <div class="pr-right">
+                <div class="pr-stat">개인</div>
+                <div class="pr-badge badge-live">● 대표작</div>
+                <div class="pr-btn-group">
+                  <!-- TODO: ajh0105.github.io/single_portfolio_epit 에 GitHub Pages 배포 후 확인 -->
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/single_portfolio_epit/','_blank')">🔗 Live</button>
+                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/epit-smart-charging','_blank')">🧪 AI 테스트</button>
+                </div>
+              </div>
+            </div>
+            <!-- 일반 프로젝트 (사용자 지정 순서) -->
+            <div class="proj-row" data-tags="팀 ai" onclick="openProjectModal('tollingpm')">
+              <div class="pr-icon pi9">🔧</div>
+              <div class="pr-info">
+                <div class="pr-name">차세대 스마트 톨링 시스템 예지보전 구축</div>
+                <div class="pr-desc">톨링 장비 센서 데이터 수집 · AI 기반 고장 예측 모델 · 예지보전 웹 애플리케이션 대시보드</div>
+                <div class="pr-tags"><span class="pr-tag">Python</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Chart.js</span></div>
+              </div>
+              <div class="pr-right">
+                <div class="pr-stat">팀</div>
+                <div class="pr-badge badge-done">✓ Done</div>
+                <div class="pr-btn-group">
+                  <!-- TODO: 스마트 톨링 PM GitHub repo 업데이트 후 Pages 주소로 교체 -->
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://github.com/ajh0105','_blank')">🔗 Live</button>
+                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/smart-tolling-pm','_blank')">🧪 AI 테스트</button>
+                </div>
+              </div>
+            </div>
+            <div class="proj-row" data-tags="개인 ai" onclick="openProjectModal('traffic')">
+              <div class="pr-icon pi2">🚗</div>
+              <div class="pr-info">
+                <div class="pr-name">AI 기반 교통 분석 플랫폼</div>
+                <div class="pr-desc">YOLO 기반 차량 탐지 및 교통 흐름 분석 · Spring Boot 백엔드 · Vue.js 풀스택</div>
+                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">Python</span><span class="pr-tag">Spring Boot</span><span class="pr-tag">Vue.js</span></div>
+              </div>
+              <div class="pr-right">
+                <div class="pr-stat">개인</div>
+                <div class="pr-badge badge-done">✓ Done</div>
+                <div class="pr-btn-group">
+                  <!-- TODO: ajh0105.github.io/ai_traffic_platform 에 GitHub Pages 배포 후 확인 -->
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_traffic_platform/','_blank')">🔗 Live</button>
+                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/ai-traffic-platform','_blank')">🧪 AI 테스트</button>
+                </div>
+              </div>
+            </div>
+            <div class="proj-row" data-tags="팀 웹앱" onclick="openProjectModal('vshopping')">
+              <div class="pr-icon pi8">🛒</div>
+              <div class="pr-info">
+                <div class="pr-name">V사 쇼핑몰 웹 애플리케이션</div>
+                <div class="pr-desc">상품 관리 · 장바구니 · 결제 · 리뷰 기능 · Spring Boot + JPA + Vue.js + Vite 팀 풀스택 개발</div>
+                <div class="pr-tags"><span class="pr-tag">Spring Boot</span><span class="pr-tag">JPA</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Vite</span></div>
+              </div>
+              <!-- AWS 서버에 백엔드 배포 후 simon-portfolio.site DNS를 AWS IP로 교체 -->
+              <div class="pr-right"><div class="pr-stat">팀</div><div class="pr-badge badge-done">✓ Done</div><div class="pr-badge badge-done" style="margin-top:2px">🔗 Live</div></div>
+            </div>
+            <div class="proj-row" data-tags="개인 웹앱" onclick="openProjectModal('mshopping')">
+              <div class="pr-icon pi4">🛍️</div>
+              <div class="pr-info">
+                <div class="pr-name">M사 쇼핑몰 웹 애플리케이션</div>
+                <div class="pr-desc">상품 관리 · 장바구니 · 결제 플로우 구현 · Spring Boot + JPA + Vue.js + Vite 풀스택</div>
+                <div class="pr-tags"><span class="pr-tag">Spring Boot</span><span class="pr-tag">JPA</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Vite</span></div>
+              </div>
+              <!-- AWS 서버에 백엔드 배포 후 simon-portfolio.site DNS를 AWS IP로 교체 -->
+              <div class="pr-right"><div class="pr-stat">개인</div><div class="pr-badge badge-done">✓ Done</div><div class="pr-badge badge-done" style="margin-top:2px">🔗 Live</div></div>
+            </div>
+            <div class="proj-row" data-tags="팀 웹앱" onclick="openProjectModal('busan')">
+              <div class="pr-icon pi7">🗺️</div>
+              <div class="pr-info">
+                <div class="pr-name">부산시 문화관광 웹 애플리케이션</div>
+                <div class="pr-desc">부산시 문화·관광 정보 플랫폼 · Spring Boot · JPA · Vue.js · PostgreSQL 풀스택</div>
+                <div class="pr-tags"><span class="pr-tag">Spring Boot</span><span class="pr-tag">JPA</span><span class="pr-tag">Vue.js</span><span class="pr-tag">PostgreSQL</span></div>
+              </div>
+              <div class="pr-right"><div class="pr-stat">팀</div><div class="pr-badge badge-done">✓ Done</div><div class="pr-badge badge-done" style="margin-top:2px">🔗 Live</div></div>
+            </div>
+            <div class="proj-row" data-tags="개인 웹앱" onclick="openProjectModal('cheongdo')">
+              <div class="pr-icon pi3">🏛️</div>
+              <div class="pr-info">
+                <div class="pr-name">청도군 문화관광 웹 애플리케이션</div>
+                <div class="pr-desc">청도군 문화·관광 정보 플랫폼 · Spring Boot · JPA · Vue.js · PostgreSQL 풀스택</div>
+                <div class="pr-tags"><span class="pr-tag">Spring Boot</span><span class="pr-tag">JPA</span><span class="pr-tag">Vue.js</span><span class="pr-tag">PostgreSQL</span></div>
+              </div>
+              <div class="pr-right"><div class="pr-stat">개인</div><div class="pr-badge badge-done">✓ Done</div><div class="pr-badge badge-done" style="margin-top:2px">🔗 Live</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SKILLS PANE -->
+        <div class="pane" id="pane-skills">
+          <div class="skills-pane">
+            <div class="sk-hero">
+              <div class="sk-hero-text">
+                <div class="pane-title">Tech Stack & Skills</div>
+                <p>국비 AI 과정 6개월 + 개인·팀 프로젝트 10개 이상 완성. 토목·수자원·환경 지식과 AI 개발 역량을 결합합니다.</p>
+              </div>
+              <div class="sk-hero-stats">
+                <div class="sk-stat"><div class="sv">10+</div><div class="sl">Projects</div></div>
+                <div class="sk-stat"><div class="sv">6mo</div><div class="sl">AI 과정</div></div>
+                <div class="sk-stat"><div class="sv">8yr</div><div class="sl">도메인 경험</div></div>
+                <div class="sk-stat"><div class="sv">2</div><div class="sl">AI Coding Tools</div></div>
+              </div>
+            </div>
+            <div class="sk-grid">
+              <div class="sk-card">
+                <div class="sk-card-head"><div class="sk-card-icon sci1">🧠</div><div class="sk-card-name">AI / ML</div></div>
+                <div class="sk-items">
+                  <span class="sk-chip">Python</span><span class="sk-chip">PyTorch</span>
+                  <span class="sk-chip">TensorFlow</span><span class="sk-chip">YOLOv8</span>
+                  <span class="sk-chip">CRNN</span><span class="sk-chip">OpenCV</span>
+                  <span class="sk-chip">FastAPI</span><span class="sk-chip">Jetson</span>
+                </div>
+              </div>
+              <div class="sk-card">
+                <div class="sk-card-head"><div class="sk-card-icon sci2">⚙️</div><div class="sk-card-name">Backend</div></div>
+                <div class="sk-items">
+                  <span class="sk-chip">Spring Boot</span><span class="sk-chip">FastAPI</span>
+                  <span class="sk-chip">Java</span><span class="sk-chip">JPA</span>
+                  <span class="sk-chip">MyBatis</span><span class="sk-chip">PostgreSQL</span>
+                  <span class="sk-chip">REST API</span>
+                </div>
+              </div>
+              <div class="sk-card">
+                <div class="sk-card-head"><div class="sk-card-icon sci3">🖥️</div><div class="sk-card-name">Frontend</div></div>
+                <div class="sk-items">
+                  <span class="sk-chip">Vue.js</span><span class="sk-chip">Vite</span>
+                  <span class="sk-chip">JavaScript</span><span class="sk-chip">Chart.js</span>
+                  <span class="sk-chip">HTML / CSS</span><span class="sk-chip">Tailwind CSS</span>
+                </div>
+              </div>
+              <div class="sk-card">
+                <div class="sk-card-head"><div class="sk-card-icon sci4">🚀</div><div class="sk-card-name">Tools & 협업</div></div>
+                <div class="sk-items">
+                  <span class="sk-chip">GitHub</span><span class="sk-chip">Docker</span>
+                  <span class="sk-chip">Claude Code</span><span class="sk-chip">Codex</span>
+                  <span class="sk-chip">Vibe Coding</span><span class="sk-chip">Linux</span>
+                </div>
+              </div>
+            </div>
+            <div class="sk-bars" style="margin-top:1.2rem">
+              <div class="sk-bar-title">Core Skill Proficiency</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem 2rem">
+                <div class="skb"><div class="skb-row"><span class="skb-name">Spring Boot / FastAPI</span><span class="skb-pct">82%</span></div><div class="skb-track"><div class="skb-fill bf1" style="width:82%"></div></div></div>
+                <div class="skb"><div class="skb-row"><span class="skb-name">Vue.js / Vite</span><span class="skb-pct">78%</span></div><div class="skb-track"><div class="skb-fill bf2" style="width:78%"></div></div></div>
+                <div class="skb"><div class="skb-row"><span class="skb-name">AI / YOLO / PyTorch</span><span class="skb-pct">75%</span></div><div class="skb-track"><div class="skb-fill bf3" style="width:75%"></div></div></div>
+                <div class="skb"><div class="skb-row"><span class="skb-name">도메인 (교통·환경)</span><span class="skb-pct">90%</span></div><div class="skb-track"><div class="skb-fill bf4" style="width:90%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACT PANE -->
+        <div class="pane" id="pane-contact">
+          <div class="contact-pane">
+            <div class="cont-info">
+              <h2 class="cont-tagline">교통·환경 AI,<br>함께 <em>만들어요</em></h2>
+              <p class="cont-body">교통 분석, 자연재해 대응, 수자원·환경 분야 AI 프로젝트 협업과 채용 문의를 환영합니다. 도메인 지식 + AI 기술로 현장의 실제 문제를 해결합니다.</p>
+              <div class="cont-links">
+                <a href="mailto:ams01055@gmail.com" class="cont-link">
+                  <div class="cl-icon">✉️</div>
+                  <div class="cl-text"><div class="cl-type">Email</div><div class="cl-val">ams01055@gmail.com</div></div>
+                  <div class="cl-arr">›</div>
+                </a>
+                <a href="#" class="cont-link">
+                  <div class="cl-icon">🐙</div>
+                  <div class="cl-text"><div class="cl-type">GitHub</div><div class="cl-val">github.com/ajh0105</div></div>
+                  <div class="cl-arr">›</div>
+                </a>
+                <a href="https://www.mbccomputer.co.kr/front/education/course/1571" target="_blank" class="cont-link">
+                  <div class="cl-icon">🏫</div>
+                  <div class="cl-text"><div class="cl-type">수료 과정</div><div class="cl-val">MBC 컴퓨터 학원 AI 풀스택</div></div>
+                  <div class="cl-arr">›</div>
+                </a>
+                <a href="#" class="cont-link">
+                  <div class="cl-icon">📄</div>
+                  <div class="cl-text"><div class="cl-type">Resume</div><div class="cl-val">Download PDF</div></div>
+                  <div class="cl-arr">›</div>
+                </a>
+              </div>
+            </div>
+            <div class="cont-form">
+              <div class="cf-title">프로젝트 · 채용 문의</div>
+              <!-- TODO: formspree.io에서 생성한 endpoint로 교체 (예: https://formspree.io/f/xxxxxxxx) -->
+              <form id="contactForm" action="https://formspree.io/f/REPLACE_ME" method="POST">
+                <div class="ios-field-group">
+                  <label class="ios-label">이름</label>
+                  <input class="ios-input" type="text" name="name" placeholder="홍길동" required>
+                </div>
+                <div class="ios-field-group">
+                  <label class="ios-label">이메일</label>
+                  <input class="ios-input" type="email" name="email" placeholder="email@example.com" required>
+                </div>
+                <div class="ios-field-group">
+                  <label class="ios-label">문의 유형</label>
+                  <input class="ios-input" type="text" name="subject" placeholder="예: 교통 AI, 채용, 협업 프로젝트">
+                </div>
+                <div class="ios-field-group">
+                  <label class="ios-label">상세 내용</label>
+                  <textarea class="ios-input" name="message" placeholder="프로젝트 개요, 도메인, 일정을 알려주세요" required></textarea>
+                </div>
+                <button class="ios-submit" type="submit" id="contactSubmitBtn">Send Message</button>
+                <div id="contactStatus" style="font-size:12px; margin-top:8px; text-align:center;"></div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /win-content -->
+    </div><!-- /win-body -->
+  </div><!-- /win -->
+
+</div><!-- /desktop -->
+
+<!-- DOCK -->
+<div id="dock">
+  <div class="dock-icon active" id="dock-overview" onclick="switchPane('overview')">
+    <div class="di-wrap di1">🏠</div>
+    <div class="dock-label">Overview</div>
+    <div class="dock-dot"></div>
+  </div>
+  <div class="dock-icon" id="dock-about" onclick="switchPane('about')">
+    <div class="di-wrap di2">👤</div>
+    <div class="dock-label">About</div>
+    <div class="dock-dot"></div>
+  </div>
+  <div class="dock-icon" id="dock-projects" onclick="switchPane('projects')">
+    <div class="di-wrap di3">🚀</div>
+    <div class="dock-label">Projects</div>
+    <div class="dock-dot"></div>
+  </div>
+  <div class="dock-icon" id="dock-skills" onclick="switchPane('skills')">
+    <div class="di-wrap di4">🛠️</div>
+    <div class="dock-label">Skills</div>
+    <div class="dock-dot"></div>
+  </div>
+  <div class="dock-sep"></div>
+  <div class="dock-icon" id="dock-contact" onclick="switchPane('contact')">
+    <div class="di-wrap di5">💬</div>
+    <div class="dock-label">Contact</div>
+    <div class="dock-dot"></div>
+  </div>
+</div>
+
+<!-- PROJECT DETAIL MODAL -->
+<div class="modal-overlay" id="projModalOverlay" onclick="closeProjectModal(event)">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon">🕳️</div>
+      <div class="modal-header-text">
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-tags" id="modalTags"></div>
+      </div>
+      <button class="modal-close" onclick="closeProjectModal(event)">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc" id="modalDesc"></p>
+    </div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════
+   CLOCK
+════════════════════════════ */
+function updateClock() {
+  const now = new Date();
+  const wd  = ['일','월','화','수','목','금','토'][now.getDay()];
+  const mo  = now.getMonth() + 1;
+  const d   = now.getDate();
+  const h   = now.getHours().toString().padStart(2,'0');
+  const m   = now.getMinutes().toString().padStart(2,'0');
+  document.getElementById('clock').textContent = `${wd} ${mo}/${d} ${h}:${m}`;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// 프로젝트 개수 자동 반영
+document.getElementById('projCount').textContent =
+  document.querySelectorAll('.proj-list .proj-row').length;
+
+/* ════════════════════════════
+   WINDOW STATE
+════════════════════════════ */
+var winVisible   = true;   // false when closed or minimized
+var winMinimized = false;  // true only when minimized (not closed)
+var winMaximized = false;
+var winSavedL, winSavedT;
+
+/* ════════════════════════════
+   PANE CONFIG
+════════════════════════════ */
+const paneConfig = {
+  overview: { icon: '🏠', title: 'Simon-Ahn — Portfolio' },
+  about:    { icon: '👤', title: 'About Me' },
+  projects: { icon: '🚀', title: 'Projects' },
+  skills:   { icon: '🛠️', title: 'Skills & Tech Stack' },
+  contact:  { icon: '💬', title: 'Contact' },
+};
+
+function applyPane(name) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.getElementById('pane-' + name).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  const sbItem = document.getElementById('nav-' + name);
+  if (sbItem) sbItem.classList.add('active');
+  document.querySelectorAll('.dock-icon').forEach(i => i.classList.remove('active'));
+  const dockItem = document.getElementById('dock-' + name);
+  if (dockItem) dockItem.classList.add('active');
+  const cfg = paneConfig[name];
+  document.getElementById('winIcon').textContent = cfg.icon;
+  document.getElementById('winTitle').textContent = cfg.title;
+  document.getElementById('winContent').scrollTop = 0;
+}
+
+function switchPane(name) {
+  if (!winVisible) { showWindow(name); return; }
+  applyPane(name);
+}
+
+function showWindow(pane) {
+  winVisible = true;
+
+  // Reset any leftover inline styles from close/minimize animations
+  win.style.transition    = 'none';
+  win.style.transform     = '';
+  win.style.opacity       = '';
+  win.style.transformOrigin = '';
+  win.style.display       = 'flex';
+  win.classList.remove('maximized');
+  winMaximized = false;
+  centerWindow();
+
+  if (pane) applyPane(pane);
+
+  if (winMinimized) {
+    // Animate from dock position
+    var dockRect    = dock.getBoundingClientRect();
+    var desktopRect = desktop.getBoundingClientRect();
+    var targetL = parseFloat(win.style.left) || 0;
+    var targetT = parseFloat(win.style.top)  || 0;
+    var origX = (dockRect.left + dockRect.width  / 2 - desktopRect.left) - targetL;
+    var origY = (dockRect.top  + dockRect.height / 2 - desktopRect.top)  - targetT;
+
+    win.style.transformOrigin = origX + 'px ' + origY + 'px';
+    win.style.transform  = 'scale(0.04)';
+    win.style.opacity    = '0';
+
+    requestAnimationFrame(function() { requestAnimationFrame(function() {
+      win.style.transition = 'transform .42s cubic-bezier(.16,1,.3,1), opacity .28s ease';
+      win.style.transform  = 'scale(1)';
+      win.style.opacity    = '1';
+      setTimeout(function() {
+        win.style.transformOrigin = '';
+        win.style.transition = '';
+        winMinimized = false;
+      }, 450);
+    }); });
+  } else {
+    // Animate scale-up from center
+    win.style.transform = 'scale(.85)';
+    win.style.opacity   = '0';
+
+    requestAnimationFrame(function() { requestAnimationFrame(function() {
+      win.style.transition = 'transform .35s cubic-bezier(.16,1,.3,1), opacity .25s ease';
+      win.style.transform  = 'scale(1)';
+      win.style.opacity    = '1';
+      setTimeout(function() { win.style.transition = ''; }, 360);
+    }); });
+  }
+}
+
+/* ════════════════════════════
+   WINDOW SETUP — absolute position
+════════════════════════════ */
+const win      = document.getElementById('mainWin');
+const desktop  = document.getElementById('desktop');
+const dock     = document.getElementById('dock');
+
+// Default size constants
+const WIN_W = () => Math.min(1100, window.innerWidth  - 40);
+const WIN_H = () => Math.min(680,  window.innerHeight - 140);
+
+function centerWindow() {
+  const dw = desktop.offsetWidth;
+  const dh = desktop.offsetHeight;
+  win.style.left   = Math.max(0, (dw - WIN_W()) / 2) + 'px';
+  win.style.top    = Math.max(0, (dh - WIN_H()) / 2) + 'px';
+  win.style.width  = '';
+  win.style.height = '';
+}
+
+// Init: show window centered
+win.style.opacity   = '0';
+win.style.transform = 'scale(.88)';
+win.style.transition = 'none';
+requestAnimationFrame(() => {
+  centerWindow();
+  requestAnimationFrame(() => {
+    win.style.transition = 'opacity .3s ease, transform .35s cubic-bezier(.16,1,.3,1)';
+    win.style.opacity    = '1';
+    win.style.transform  = 'scale(1)';
+  });
+});
+
+/* ════════════════════════════
+   DRAG
+════════════════════════════ */
+const titlebar = document.querySelector('.win-titlebar');
+let dragging = false, dragX, dragY, winL, winT;
+
+titlebar.addEventListener('mousedown', e => {
+  if (e.target.closest('.traffic') || e.target.closest('.win-toolbar-right')) return;
+  if (win.classList.contains('maximized')) return;
+  dragging = true;
+  dragX = e.clientX;
+  dragY = e.clientY;
+  winL  = parseInt(win.style.left)  || 0;
+  winT  = parseInt(win.style.top)   || 0;
+  titlebar.classList.add('dragging');
+  win.style.transition = 'none';
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const dx = e.clientX - dragX;
+  const dy = e.clientY - dragY;
+  // Clamp inside desktop
+  const maxL = desktop.offsetWidth  - win.offsetWidth;
+  const maxT = desktop.offsetHeight - 52; // keep titlebar visible
+  win.style.left = Math.max(0, Math.min(maxL, winL + dx)) + 'px';
+  win.style.top  = Math.max(0, Math.min(maxT, winT + dy)) + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (!dragging) return;
+  dragging = false;
+  titlebar.classList.remove('dragging');
+  win.style.transition = '';
+});
+
+/* ════════════════════════════
+   TRAFFIC LIGHTS
+════════════════════════════ */
+
+// ── RED: Close ──
+document.getElementById('tlRed').addEventListener('click', function() {
+  win.style.transition = 'opacity .18s ease, transform .2s ease';
+  win.style.opacity    = '0';
+  win.style.transform  = 'scale(.85)';
+  setTimeout(function() {
+    win.style.display = 'none';
+    winVisible   = false;
+    winMinimized = false;
+  }, 200);
+});
+
+// ── YELLOW: Minimize to dock ──
+document.getElementById('tlYel').addEventListener('click', function() {
+  var dockRect = dock.getBoundingClientRect();
+  var winRect  = win.getBoundingClientRect();
+  var tx = (dockRect.left + dockRect.width  / 2) - (winRect.left + winRect.width  / 2);
+  var ty = (dockRect.top  + dockRect.height / 2) - (winRect.top  + winRect.height / 2);
+
+  win.style.transition      = 'transform .42s cubic-bezier(.4,0,.2,1), opacity .35s ease';
+  win.style.transformOrigin = 'center center';
+  win.style.transform       = 'translate(' + tx + 'px,' + ty + 'px) scale(0.04)';
+  win.style.opacity         = '0';
+
+  setTimeout(function() {
+    win.style.display         = 'none';
+    win.style.transform       = '';
+    win.style.opacity         = '';
+    win.style.transition      = '';
+    win.style.transformOrigin = '';
+    winVisible   = false;
+    winMinimized = true;
+  }, 430);
+});
+
+// ── GREEN: Maximize / Restore ──
+document.getElementById('tlGrn').addEventListener('click', function() {
+  if (!winMaximized) {
+    winSavedL = win.style.left;
+    winSavedT = win.style.top;
+    win.style.transition = 'all .32s cubic-bezier(.16,1,.3,1)';
+    win.classList.add('maximized');
+    winMaximized = true;
+  } else {
+    win.style.transition = 'all .32s cubic-bezier(.16,1,.3,1)';
+    win.classList.remove('maximized');
+    win.style.left   = winSavedL;
+    win.style.top    = winSavedT;
+    win.style.width  = '';
+    win.style.height = '';
+    winMaximized = false;
+  }
+  setTimeout(function() { win.style.transition = ''; }, 350);
+});
+
+/* ════════════════════════════
+   OPEN WINDOW FROM FOLDER ICON
+════════════════════════════ */
+function openWinFromIcon(iconEl, pane) {
+  winVisible   = true;
+  winMinimized = false;
+  winMaximized = false;
+  win.classList.remove('maximized');
+
+  const iconRect    = iconEl.getBoundingClientRect();
+  const desktopRect = desktop.getBoundingClientRect();
+
+  // Folder icon center relative to desktop
+  const iconCX = iconRect.left + iconRect.width  / 2 - desktopRect.left;
+  const iconCY = iconRect.top  + iconRect.height / 2 - desktopRect.top;
+
+  // Target window position (centered in desktop)
+  const targetL = (desktop.offsetWidth  - WIN_W()) / 2;
+  const targetT = (desktop.offsetHeight - WIN_H()) / 2;
+
+  // transform-origin: icon center relative to window top-left
+  const origX = iconCX - targetL;
+  const origY = iconCY - targetT;
+
+  win.style.display   = 'flex';
+  win.style.left      = targetL + 'px';
+  win.style.top       = targetT  + 'px';
+  win.style.width     = '';
+  win.style.height    = '';
+  win.style.transformOrigin = `${origX}px ${origY}px`;
+  win.style.transform  = 'scale(0.04)';
+  win.style.opacity    = '0';
+  win.style.transition = 'none';
+
+  // Bounce animation frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      win.style.transition = 'transform .42s cubic-bezier(.16,1,.3,1), opacity .28s ease';
+      win.style.transform  = 'scale(1)';
+      win.style.opacity    = '1';
+
+      setTimeout(() => {
+        win.style.transformOrigin = '';
+        win.style.transition      = '';
+      }, 450);
+    });
+  });
+
+  // Switch to desired pane
+  if (pane) switchPane(pane);
+
+  // Icon click effect
+  iconEl.classList.add('selected');
+  setTimeout(() => iconEl.classList.remove('selected'), 300);
+}
+
+/* ════════════════════════════
+   NOTIFICATION WIDGET
+════════════════════════════ */
+const notifBtn    = document.getElementById('notifBtn');
+const notifWidget = document.getElementById('notifWidget');
+
+notifBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const showing = notifWidget.classList.contains('show');
+  notifWidget.classList.remove('show');
+  notifBtn.classList.remove('active');
+  if (!showing) {
+    // force reflow then show
+    notifWidget.offsetHeight;
+    notifWidget.classList.add('show');
+    notifBtn.classList.add('active');
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!notifWidget.contains(e.target) && e.target !== notifBtn) {
+    notifWidget.classList.remove('show');
+    notifBtn.classList.remove('active');
+  }
+});
+
+document.getElementById('nwClear').addEventListener('click', e => {
+  e.stopPropagation();
+  // 고정 알림은 제외
+  notifWidget.querySelectorAll('.nw-item:not(.nw-pinned)').forEach(item => {
+    item.style.transition = 'opacity .2s, transform .2s';
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(20px)';
+    setTimeout(() => item.remove(), 210);
+  });
+  setTimeout(() => {
+    notifWidget.classList.remove('show');
+    notifBtn.classList.remove('active');
+  }, 350);
+});
+
+// 고정 알림 클릭 → 알림창 닫기
+document.getElementById('nwPinned').addEventListener('click', function(e) {
+  e.stopPropagation();
+  notifWidget.classList.remove('show');
+  notifBtn.classList.remove('active');
+});
+
+// 페이지 로드 후 알림창 자동 표시 → 3초 후 자동 닫기
+setTimeout(function() {
+  notifWidget.classList.add('show');
+  notifBtn.classList.add('active');
+  setTimeout(function() {
+    notifWidget.classList.remove('show');
+    notifBtn.classList.remove('active');
+  }, 10000);
+}, 800);
+
+/* ════════════════════════════
+   MENU BAR MENUS
+════════════════════════════ */
+/* ════════════════════════════
+   FILTER BUTTONS
+════════════════════════════ */
+function sortFeaturedToTop() {
+  var list = document.querySelector('.proj-list');
+  var featured = Array.from(list.querySelectorAll('.proj-row[data-featured]'))
+    .filter(function(r) { return r.style.display !== 'none'; });
+  for (var i = featured.length - 1; i >= 0; i--) {
+    list.insertBefore(featured[i], list.firstChild);
+  }
+}
+
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    btn.closest('.proj-toolbar').querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('on'); });
+    btn.classList.add('on');
+
+    var filter = btn.getAttribute('data-filter') || 'all';
+    document.querySelectorAll('.proj-list .proj-row').forEach(function(row) {
+      if (filter === 'all') {
+        row.style.display = '';
+      } else {
+        var tags = row.getAttribute('data-tags') || '';
+        row.style.display = tags.split(' ').indexOf(filter) !== -1 ? '' : 'none';
+      }
+    });
+
+    sortFeaturedToTop();
+  });
+});
+
+// 초기 로드 시도 대표작 상단 고정
+sortFeaturedToTop();
+
+/* ════════════════════════════
+   PROJECT DETAIL MODAL
+════════════════════════════ */
+const projectData = {
+  porthole: {
+    icon: '🕳️', iconBg: 'linear-gradient(135deg,#e8f0fe,#c7d7fc)',
+    name: 'AI 기반 포트홀 탐지 대시보드',
+    desc: '도로 노면 영상에서 YOLOv8로 포트홀을 실시간 탐지하고, FastAPI 백엔드가 탐지 결과를 저장·집계합니다. Vue.js + Chart.js 대시보드에서 시간대별·지역별 포트홀 발생 통계를 시각화하며, 도로 유지보수 의사결정을 지원하는 것을 목표로 설계했습니다.',
+    tags: ['YOLOv8','FastAPI','Vue.js','Chart.js'],
+    liveUrl: 'https://ajh0105.github.io/ai_porthole_detected/',
+    testUrl: 'https://huggingface.co/spaces/ajh0105/ai-porthole-detection',
+    testLabel: '기능 테스트 하기'
+  },
+  tolling: {
+    icon: '🚦', iconBg: 'linear-gradient(135deg,#e8f5fe,#c7e0fc)',
+    name: 'GPS와 번호판을 활용한 AI기반 차세대 스마트 톨링 시스템',
+    desc: 'CRNN 기반 OCR로 차량 번호판을 인식하고, GPS 좌표로 주행 거리를 계산하여 자동으로 통행료를 부과하는 차세대 하이패스 대안 시스템입니다. Jetson 엣지 디바이스에서 실시간 추론을 수행하고, 웹 대시보드에서 통행 내역과 요금 산정 과정을 확인할 수 있습니다.',
+    tags: ['CRNN','OCR','Jetson','FastAPI','Vue.js'],
+    liveUrl: 'https://github.com/ajh0105',
+    testUrl: 'https://huggingface.co/spaces/ajh0105/smart-tolling',
+    testLabel: '기능 테스트 하기'
+  },
+  epit: {
+    icon: '⚡', iconBg: 'linear-gradient(135deg,#fee8f0,#fcc7d7)',
+    name: 'E-pit AI 기반 스마트 충전소 통합 관제 시스템',
+    desc: '현대차그룹 E-pit 충전 네트워크를 대상으로 한 통합 관제 플랫폼입니다. YOLOv8로 충전소 불법주차를 탐지하고, LSTM 기반 고장 예측(PHM)으로 설비 점검 시점을 예측하며, XGBoost로 주변 교통 위험도를 산출합니다. STOMP WebSocket으로 실시간 데이터를 대시보드에 푸시합니다.',
+    tags: ['YOLOv8','LSTM','FastAPI','Spring Boot','Vue.js','ECharts','Docker'],
+    liveUrl: 'https://ajh0105.github.io/single_portfolio_epit/',
+    testUrl: 'https://huggingface.co/spaces/ajh0105/epit-smart-charging',
+    testLabel: '기능 테스트 하기'
+  },
+  tollingpm: {
+    icon: '🔧', iconBg: 'linear-gradient(135deg,#fde8fe,#f0c7fc)',
+    name: '차세대 스마트 톨링 시스템 예지보전 구축',
+    desc: '톨링 장비(카메라, 센서)에서 수집한 운영 데이터를 기반으로 AI 고장 예측 모델을 구축했습니다. 장비 이상 징후를 사전에 감지해 예지보전(Predictive Maintenance)을 가능하게 하는 웹 대시보드를 제공합니다.',
+    tags: ['Python','FastAPI','Vue.js','Chart.js'],
+    liveUrl: 'https://github.com/ajh0105',
+    testUrl: 'https://huggingface.co/spaces/ajh0105/smart-tolling-pm',
+    testLabel: '기능 테스트 하기'
+  },
+  traffic: {
+    icon: '🚗', iconBg: 'linear-gradient(135deg,#e8fbf2,#c4f0d8)',
+    name: 'AI 기반 교통 분석 플랫폼',
+    desc: 'YOLO 기반 차량 탐지 모델로 도로 영상에서 차량 흐름과 혼잡도를 분석합니다. Spring Boot 백엔드가 분석 결과를 저장하고, Vue.js 프론트엔드에서 시간대별 교통량과 혼잡 구간을 시각화합니다.',
+    tags: ['YOLOv8','Python','Spring Boot','Vue.js'],
+    liveUrl: 'https://ajh0105.github.io/ai_traffic_platform/',
+    testUrl: 'https://huggingface.co/spaces/ajh0105/ai-traffic-platform',
+    testLabel: '기능 테스트 하기'
+  },
+  vshopping: {
+    icon: '🛒', iconBg: 'linear-gradient(135deg,#fef8e8,#fcedc7)',
+    name: 'V사 쇼핑몰 웹 애플리케이션',
+    desc: '상품 목록/상세, 장바구니, 결제, 리뷰 기능을 갖춘 이커머스 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 팀 단위 풀스택 개발을 진행했습니다.',
+    tags: ['Spring Boot','JPA','Vue.js','Vite'],
+    liveUrl: 'https://v-shopping.simon-portfolio.site',
+    testUrl: null
+  },
+  mshopping: {
+    icon: '🛍️', iconBg: 'linear-gradient(135deg,#fef5e8,#fce0c7)',
+    name: 'M사 쇼핑몰 웹 애플리케이션',
+    desc: '상품 관리, 장바구니, 결제 플로우를 구현한 이커머스 웹 애플리케이션입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 개인 풀스택 프로젝트로 진행했습니다.',
+    tags: ['Spring Boot','JPA','Vue.js','Vite'],
+    liveUrl: 'https://musinsa.simon-portfolio.site',
+    testUrl: null
+  },
+  busan: {
+    icon: '🗺️', iconBg: 'linear-gradient(135deg,#e8fef5,#c7fce0)',
+    name: '부산시 문화관광 웹 애플리케이션',
+    desc: '부산시의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 팀 단위 풀스택 개발을 진행했습니다.',
+    tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
+    liveUrl: 'https://jihwana120.github.io',
+    testUrl: null
+  },
+  cheongdo: {
+    icon: '🏛️', iconBg: 'linear-gradient(135deg,#f5f0fe,#dcc7fc)',
+    name: '청도군 문화관광 웹 애플리케이션',
+    desc: '청도군의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 개인 풀스택 프로젝트로 진행했습니다.',
+    tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
+    liveUrl: 'https://ajh0105.github.io',
+    testUrl: null
+  }
+};
+
+function openProjectModal(id) {
+  const p = projectData[id];
+  if (!p) return;
+
+  const iconEl = document.getElementById('modalIcon');
+  iconEl.textContent = p.icon;
+  iconEl.style.background = p.iconBg;
+  document.getElementById('modalTitle').textContent = p.name;
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('modalTags').innerHTML =
+    p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
+
+  let footerHtml = `<button class="modal-btn modal-btn-live" onclick="window.open('${p.liveUrl}','_blank')">🔗 프로젝트 보기</button>`;
+  if (p.testUrl) {
+    footerHtml += `<button class="modal-btn modal-btn-ai" onclick="window.open('${p.testUrl}','_blank')">🧪 ${p.testLabel}</button>`;
+  }
+  document.getElementById('modalFooter').innerHTML = footerHtml;
+
+  document.getElementById('projModalOverlay').classList.add('show');
+}
+
+function closeProjectModal(e) {
+  document.getElementById('projModalOverlay').classList.remove('show');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProjectModal();
+});
+
+/* ════════════════════════════
+   CONTACT FORM (Formspree)
+════════════════════════════ */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form   = e.target;
+  const btn    = document.getElementById('contactSubmitBtn');
+  const status = document.getElementById('contactStatus');
+
+  btn.disabled = true;
+  btn.textContent = '전송 중...';
+  status.textContent = '';
+
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(res => {
+    if (res.ok) {
+      status.style.color = '#1c8a3e';
+      status.textContent = '✓ 메시지가 전송되었습니다. 빠르게 답변 드리겠습니다.';
+      form.reset();
+    } else {
+      status.style.color = '#ff3b30';
+      status.textContent = '✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+    }
+  })
+  .catch(() => {
+    status.style.color = '#ff3b30';
+    status.textContent = '✕ 전송에 실패했습니다. 네트워크를 확인해주세요.';
+  })
+  .finally(() => {
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+  });
+});
+</script>
+</body>
+</html>
