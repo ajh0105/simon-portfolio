@@ -1170,10 +1170,8 @@ textarea.ios-input { resize: none; height: 80px; }
                 <div class="pr-stat">개인</div>
                 <div class="pr-badge badge-live">● 대표작</div>
                 <div class="pr-btn-group">
-                  <!-- TODO: ajh0105.github.io/ai_porthole_detected 에 GitHub Pages 배포 후 확인 -->
                   <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_porthole_detected/','_blank')">🔗 Live</button>
-                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/ai-porthole-detection','_blank')">🧪 AI 테스트</button>
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_porthole_detected','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1206,10 +1204,8 @@ textarea.ios-input { resize: none; height: 80px; }
                 <div class="pr-stat">개인</div>
                 <div class="pr-badge badge-live">● 대표작</div>
                 <div class="pr-btn-group">
-                  <!-- TODO: ajh0105.github.io/single_portfolio_epit 에 GitHub Pages 배포 후 확인 -->
-                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/single_portfolio_epit/','_blank')">🔗 Live</button>
-                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/epit-smart-charging','_blank')">🧪 AI 테스트</button>
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/phm','_blank')">🔗 Live</button>
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_e_pit','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1243,10 +1239,8 @@ textarea.ios-input { resize: none; height: 80px; }
                 <div class="pr-stat">개인</div>
                 <div class="pr-badge badge-done">✓ Done</div>
                 <div class="pr-btn-group">
-                  <!-- TODO: ajh0105.github.io/ai_traffic_platform 에 GitHub Pages 배포 후 확인 -->
-                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_traffic_platform/','_blank')">🔗 Live</button>
-                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/ai-traffic-platform','_blank')">🧪 AI 테스트</button>
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_traffic_platform/#/','_blank')">🔗 Live</button>
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_traffic','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1882,7 +1876,7 @@ const projectData = {
     name: 'E-pit AI 기반 스마트 충전소 통합 관제 시스템',
     desc: '현대차그룹 E-pit 충전 네트워크를 대상으로 한 통합 관제 플랫폼입니다. YOLOv8로 충전소 불법주차를 탐지하고, LSTM 기반 고장 예측(PHM)으로 설비 점검 시점을 예측하며, XGBoost로 주변 교통 위험도를 산출합니다. STOMP WebSocket으로 실시간 데이터를 대시보드에 푸시합니다.',
     tags: ['YOLOv8','LSTM','FastAPI','Spring Boot','Vue.js','ECharts','Docker'],
-    liveUrl: 'https://ajh0105.github.io/single_portfolio_epit/',
+    liveUrl: 'https://ajh0105.github.io/phm',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_e_pit',
     testLabel: '기능 테스트 하기'
   },
@@ -1900,7 +1894,7 @@ const projectData = {
     name: 'AI 기반 교통 분석 플랫폼',
     desc: 'YOLO 기반 차량 탐지 모델로 도로 영상에서 차량 흐름과 혼잡도를 분석합니다. Spring Boot 백엔드가 분석 결과를 저장하고, Vue.js 프론트엔드에서 시간대별 교통량과 혼잡 구간을 시각화합니다.',
     tags: ['YOLOv8','Python','Spring Boot','Vue.js'],
-    liveUrl: 'https://ajh0105.github.io/ai_traffic_platform/',
+    liveUrl: 'https://ajh0105.github.io/ai_traffic_platform/#/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_traffic',
     testLabel: '기능 테스트 하기'
   },
@@ -1909,7 +1903,7 @@ const projectData = {
     name: 'V사 쇼핑몰 웹 애플리케이션',
     desc: '상품 목록/상세, 장바구니, 결제, 리뷰 기능을 갖춘 이커머스 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 팀 단위 풀스택 개발을 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    liveUrl: 'https://v-shopping.simon-portfolio.site',
+    liveUrl: 'https://ajh0105.github.io/layer_4_ventalize/#/',
     testUrl: null
   },
   mshopping: {
