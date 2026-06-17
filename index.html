@@ -1159,19 +1159,19 @@ textarea.ios-input { resize: none; height: 80px; }
           </div>
           <div class="proj-list">
             <!-- 대표작 (항상 상단 고정) -->
-            <div class="proj-row" data-tags="개인 ai" data-featured="true" onclick="openProjectModal('porthole')">
-              <div class="pr-icon pi1">🕳️</div>
+            <div class="proj-row" data-tags="개인 웹앱 ai" data-featured="true" onclick="openProjectModal('epit')">
+              <div class="pr-icon pi5">⚡</div>
               <div class="pr-info">
-                <div class="pr-name">AI 기반 포트홀 탐지 대시보드</div>
-                <div class="pr-desc">YOLOv8 실시간 포트홀 탐지 · FastAPI 백엔드 · Vue.js + Chart.js 대시보드로 통계 시각화</div>
-                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Chart.js</span></div>
+                <div class="pr-name">E-pit AI 기반 스마트 충전소 통합 관제 시스템</div>
+                <div class="pr-desc">현대차그룹 E-pit 충전 네트워크 관제 플랫폼 · YOLOv8 불법주차 감지 · LSTM 고장 예측(PHM) · XGBoost 교통 위험도 · STOMP WebSocket 실시간 대시보드</div>
+                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">LSTM</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Spring Boot</span><span class="pr-tag">Vue.js</span><span class="pr-tag">ECharts</span><span class="pr-tag">Docker</span></div>
               </div>
               <div class="pr-right">
                 <div class="pr-stat">개인</div>
                 <div class="pr-badge badge-live">● 대표작</div>
                 <div class="pr-btn-group">
-                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_porthole_detected/','_blank')">🔗 Live</button>
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_porthole_detected','_blank')">🧪 AI 테스트</button>
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/phm','_blank')">🔗 Live</button>
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_e_pit','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1193,19 +1193,19 @@ textarea.ios-input { resize: none; height: 80px; }
                 </div>
               </div>
             </div>
-            <div class="proj-row" data-tags="개인 웹앱 ai" data-featured="true" onclick="openProjectModal('epit')">
-              <div class="pr-icon pi5">⚡</div>
+            <div class="proj-row" data-tags="개인 ai" data-featured="true" onclick="openProjectModal('porthole')">
+              <div class="pr-icon pi1">🕳️</div>
               <div class="pr-info">
-                <div class="pr-name">E-pit AI 기반 스마트 충전소 통합 관제 시스템</div>
-                <div class="pr-desc">현대차그룹 E-pit 충전 네트워크 관제 플랫폼 · YOLOv8 불법주차 감지 · LSTM 고장 예측(PHM) · XGBoost 교통 위험도 · STOMP WebSocket 실시간 대시보드</div>
-                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">LSTM</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Spring Boot</span><span class="pr-tag">Vue.js</span><span class="pr-tag">ECharts</span><span class="pr-tag">Docker</span></div>
+                <div class="pr-name">AI 기반 포트홀 탐지 대시보드</div>
+                <div class="pr-desc">YOLOv8 실시간 포트홀 탐지 · FastAPI 백엔드 · Vue.js + Chart.js 대시보드로 통계 시각화</div>
+                <div class="pr-tags"><span class="pr-tag">YOLOv8</span><span class="pr-tag">FastAPI</span><span class="pr-tag">Vue.js</span><span class="pr-tag">Chart.js</span></div>
               </div>
               <div class="pr-right">
                 <div class="pr-stat">개인</div>
                 <div class="pr-badge badge-live">● 대표작</div>
                 <div class="pr-btn-group">
-                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/phm','_blank')">🔗 Live</button>
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_e_pit','_blank')">🧪 AI 테스트</button>
+                  <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://ajh0105.github.io/ai_porthole_detected/','_blank')">🔗 Live</button>
+                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/simonahn/ai_porthole_detected','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1911,7 +1911,7 @@ const projectData = {
     name: 'M사 쇼핑몰 웹 애플리케이션',
     desc: '상품 관리, 장바구니, 결제 플로우를 구현한 이커머스 웹 애플리케이션입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 개인 풀스택 프로젝트로 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    liveUrl: 'https://musinsa.simon-portfolio.site',
+    liveUrl: 'https://ajh0105.github.io/shop_musinsa/',
     testUrl: null
   },
   busan: {
