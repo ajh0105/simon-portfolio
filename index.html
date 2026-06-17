@@ -590,6 +590,67 @@ input, textarea, [contenteditable] {
 .modal-btn-ai { background: rgba(255,159,10,.14); color: #a05000; }
 .modal-btn-ai:hover { background: rgba(255,159,10,.24); }
 
+/* ── PROJECT DETAIL MODAL (2nd page) ── */
+.detail-overlay {
+  position: fixed; inset: 0; z-index: 4000;
+  background: rgba(0,0,0,.5);
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.detail-overlay.show { display: flex; }
+.detail-box {
+  width: min(600px, calc(100vw - 40px));
+  max-height: calc(100vh - 60px);
+  background: rgba(246,246,248,.98);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.3), 0 30px 80px rgba(0,0,0,.55);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transform: scale(.92); opacity: 0;
+  animation: modalPop .22s cubic-bezier(.16,1,.3,1) forwards;
+}
+.detail-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #e5e5ea;
+  flex-shrink: 0;
+}
+.detail-back {
+  width: 28px; height: 28px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,.06); color: #007AFF;
+  font-size: 14px; cursor: pointer; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.detail-back:hover { background: rgba(0,122,255,.12); }
+.detail-header-title { font-size: 14px; font-weight: 700; color: #1d1d1f; flex: 1; }
+.detail-close {
+  width: 24px; height: 24px; border-radius: 50%; border: none;
+  background: rgba(0,0,0,.06); color: #6e6e73;
+  font-size: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.detail-close:hover { background: rgba(0,0,0,.12); }
+.detail-body { padding: 1.2rem 1.4rem; overflow-y: auto; flex: 1; }
+.detail-section { margin-bottom: 1.5rem; }
+.detail-section:last-child { margin-bottom: 0; }
+.detail-section-title {
+  font-size: 12px; font-weight: 700; color: #8e8e93;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: .6rem; padding-bottom: .4rem;
+  border-bottom: 1px solid #e5e5ea;
+}
+.detail-section-body { font-size: 13px; color: #3c3c43; line-height: 1.75; }
+.detail-placeholder {
+  background: #f2f2f7; border: 1.5px dashed #c7c7cc;
+  border-radius: 10px; padding: 1.5rem;
+  text-align: center; color: #aeaeb2;
+  font-size: 12px; font-weight: 500;
+}
+
 /* ── PANE: SKILLS ── */
 .skills-pane { padding: 1.5rem 2.5rem; }
 .sk-hero {
@@ -1188,10 +1249,7 @@ textarea.ios-input { resize: none; height: 80px; }
                 <div class="pr-stat">팀</div>
                 <div class="pr-badge badge-live">● 대표작</div>
                 <div class="pr-btn-group">
-                  <!-- TODO: 스마트 톨링 GitHub repo 업데이트 후 Pages 주소로 교체 -->
                   <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://github.com/ajh0105','_blank')">🔗 Live</button>
-                  <!-- TODO: Hugging Face Space 배포 후 실제 주소로 교체 -->
-                  <button class="pr-btn pr-btn-ai" onclick="event.stopPropagation(); window.open('https://huggingface.co/spaces/ajh0105/smart-tolling','_blank')">🧪 AI 테스트</button>
                 </div>
               </div>
             </div>
@@ -1459,6 +1517,19 @@ textarea.ios-input { resize: none; height: 80px; }
     <div class="modal-footer" id="modalFooter"></div>
   </div>
 </div>
+
+<!-- PROJECT DESCRIPTION MODAL (2nd page) -->
+<div class="detail-overlay" id="detailOverlay" onclick="closeDetailModal(event)">
+  <div class="detail-box" onclick="event.stopPropagation()">
+    <div class="detail-header">
+      <button class="detail-back" onclick="closeDetailModal(event)" title="뒤로">‹</button>
+      <div class="detail-header-title" id="detailTitle"></div>
+      <button class="detail-close" onclick="closeDetailModal(event)">✕</button>
+    </div>
+    <div class="detail-body" id="detailBody"></div>
+  </div>
+</div>
+
 
 <script>
 /* ════════════════════════════
@@ -1860,7 +1931,7 @@ const projectData = {
     name: 'AI 기반 포트홀 탐지 대시보드',
     desc: '도로 노면 영상에서 YOLOv8로 포트홀을 실시간 탐지하고, FastAPI 백엔드가 탐지 결과를 저장·집계합니다. Vue.js + Chart.js 대시보드에서 시간대별·지역별 포트홀 발생 통계를 시각화하며, 도로 유지보수 의사결정을 지원하는 것을 목표로 설계했습니다.',
     tags: ['YOLOv8','FastAPI','Vue.js','Chart.js'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/ai_porthole_detected/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_porthole_detected',
     testLabel: '기능 테스트 하기'
@@ -1870,7 +1941,7 @@ const projectData = {
     name: 'GPS와 번호판을 활용한 AI기반 차세대 스마트 톨링 시스템',
     desc: 'CRNN 기반 OCR로 차량 번호판을 인식하고, GPS 좌표로 주행 거리를 계산하여 자동으로 통행료를 부과하는 차세대 하이패스 대안 시스템입니다. Jetson 엣지 디바이스에서 실시간 추론을 수행하고, 웹 대시보드에서 통행 내역과 요금 산정 과정을 확인할 수 있습니다.',
     tags: ['CRNN','OCR','Jetson','FastAPI','Vue.js'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://github.com/ajh0105',
     testUrl: null
   },
@@ -1879,7 +1950,7 @@ const projectData = {
     name: 'E-pit AI 기반 스마트 충전소 통합 관제 시스템',
     desc: '현대차그룹 E-pit 충전 네트워크를 대상으로 한 통합 관제 플랫폼입니다. YOLOv8로 충전소 불법주차를 탐지하고, LSTM 기반 고장 예측(PHM)으로 설비 점검 시점을 예측하며, XGBoost로 주변 교통 위험도를 산출합니다. STOMP WebSocket으로 실시간 데이터를 대시보드에 푸시합니다.',
     tags: ['YOLOv8','LSTM','FastAPI','Spring Boot','Vue.js','ECharts','Docker'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/single_portfolio_epit/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_e_pit',
     testLabel: '기능 테스트 하기'
@@ -1889,7 +1960,7 @@ const projectData = {
     name: '차세대 스마트 톨링 시스템 예지보전 구축',
     desc: '톨링 장비(카메라, 센서)에서 수집한 운영 데이터를 기반으로 AI 고장 예측 모델을 구축했습니다. 장비 이상 징후를 사전에 감지해 예지보전(Predictive Maintenance)을 가능하게 하는 웹 대시보드를 제공합니다.',
     tags: ['Python','FastAPI','Vue.js','Chart.js'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://github.com/ajh0105',
     testUrl: 'https://huggingface.co/spaces/ajh0105/smart-tolling-pm',
     testLabel: '기능 테스트 하기'
@@ -1899,7 +1970,7 @@ const projectData = {
     name: 'AI 기반 교통 분석 플랫폼',
     desc: 'YOLO 기반 차량 탐지 모델로 도로 영상에서 차량 흐름과 혼잡도를 분석합니다. Spring Boot 백엔드가 분석 결과를 저장하고, Vue.js 프론트엔드에서 시간대별 교통량과 혼잡 구간을 시각화합니다.',
     tags: ['YOLOv8','Python','Spring Boot','Vue.js'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/ai_traffic_platform/#/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_traffic',
     testLabel: '기능 테스트 하기'
@@ -1909,7 +1980,7 @@ const projectData = {
     name: 'V사 쇼핑몰 웹 애플리케이션',
     desc: '상품 목록/상세, 장바구니, 결제, 리뷰 기능을 갖춘 이커머스 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 팀 단위 풀스택 개발을 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/layer_4_ventalize/#/',
     testUrl: null
   },
@@ -1918,7 +1989,7 @@ const projectData = {
     name: 'M사 쇼핑몰 웹 애플리케이션',
     desc: '상품 관리, 장바구니, 결제 플로우를 구현한 이커머스 웹 애플리케이션입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 개인 풀스택 프로젝트로 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/shop_musinsa/',
     testUrl: null
   },
@@ -1927,7 +1998,7 @@ const projectData = {
     name: '부산시 문화관광 웹 애플리케이션',
     desc: '부산시의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 팀 단위 풀스택 개발을 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://jihwana120.github.io/',
     testUrl: null
   },
@@ -1936,7 +2007,7 @@ const projectData = {
     name: '청도군 문화관광 웹 애플리케이션',
     desc: '청도군의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 개인 풀스택 프로젝트로 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
-    descUrl: null,
+    detail: null,
     liveUrl: 'https://ajh0105.github.io/web01/',
     testUrl: null
   }
@@ -1954,10 +2025,10 @@ function openProjectModal(id) {
   document.getElementById('modalTags').innerHTML =
     p.tags.map(t => `<span class="modal-tag">${t}</span>`).join('');
 
-  let footerHtml = '';
-  if (p.descUrl) {
-    footerHtml += `<button class="modal-btn modal-btn-desc" onclick="window.open('${p.descUrl}','_blank')">📋 프로젝트 설명</button>`;
-  }
+  // 현재 열린 프로젝트 id 저장 (설명 모달에서 사용)
+  document.getElementById('projModalOverlay').dataset.currentId = id;
+
+  let footerHtml = `<button class="modal-btn modal-btn-desc" onclick="openDetailModal()">📋 프로젝트 설명</button>`;
   footerHtml += `<button class="modal-btn modal-btn-live" onclick="window.open('${p.liveUrl}','_blank')">🔗 프로젝트 보기</button>`;
   if (p.testUrl) {
     footerHtml += `<button class="modal-btn modal-btn-ai" onclick="window.open('${p.testUrl}','_blank')">🧪 ${p.testLabel}</button>`;
@@ -1971,8 +2042,48 @@ function closeProjectModal(e) {
   document.getElementById('projModalOverlay').classList.remove('show');
 }
 
+function openDetailModal() {
+  const id = document.getElementById('projModalOverlay').dataset.currentId;
+  const p = projectData[id];
+  if (!p) return;
+
+  document.getElementById('detailTitle').textContent = p.name;
+
+  const body = document.getElementById('detailBody');
+  if (p.detail) {
+    body.innerHTML = p.detail;
+  } else {
+    body.innerHTML = `
+      <div class="detail-section">
+        <div class="detail-section-title">프로젝트 개요</div>
+        <div class="detail-placeholder">📝 프로젝트 개요 내용을 추가해주세요</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">ERD</div>
+        <div class="detail-placeholder">🗄️ ERD 이미지를 추가해주세요</div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">산출물</div>
+        <div class="detail-placeholder">📁 산출물(화면설계서, 요구사항 등)을 추가해주세요</div>
+      </div>
+    `;
+  }
+
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+function closeDetailModal(e) {
+  document.getElementById('detailOverlay').classList.remove('show');
+}
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeProjectModal();
+  if (e.key === 'Escape') {
+    if (document.getElementById('detailOverlay').classList.contains('show')) {
+      closeDetailModal();
+    } else {
+      closeProjectModal();
+    }
+  }
 });
 
 /* ════════════════════════════
