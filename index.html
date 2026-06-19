@@ -1928,7 +1928,64 @@ const projectData = {
     name: 'AI 기반 포트홀 탐지 대시보드',
     desc: '도로 노면 영상에서 YOLOv8로 포트홀을 실시간 탐지하고, FastAPI 백엔드가 탐지 결과를 저장·집계합니다. Vue.js + Chart.js 대시보드에서 시간대별·지역별 포트홀 발생 통계를 시각화하며, 도로 유지보수 의사결정을 지원하는 것을 목표로 설계했습니다.',
     tags: ['YOLOv8','FastAPI','Vue.js','Chart.js'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    도로 노면 영상을 업로드하면 <b>YOLOv11</b>이 포트홀·균열을 자동 탐지하고, 기상청 API 데이터와 <b>XGBoost</b>로 블랙아이스 위험도를 예측하는 GIS 기반 통합 플랫폼입니다.
+    탐지 결과는 <b>PostGIS</b>에 공간 데이터로 저장되고, <b>Leaflet.js</b> 지도 위에 위치별 파손 현황을 시각화합니다. QGIS GeoJSON 내보내기를 지원해 현장 유지보수 의사결정을 지원합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">AI</td><td>YOLOv11 (도로파손), XGBoost / LightGBM (블랙아이스), OpenCV</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Spring Boot 3.3 (Java 21), JPA, REST API</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">AI Server</td><td>Python 3.11, FastAPI</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>React 18 + Vite, Leaflet.js (지도 시각화)</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL 15 + PostGIS 3.4 (공간 DB)</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Infra</td><td>Docker Compose, CUDA 12.1</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0">도로 영상 업로드 → YOLOv11 파손 탐지 → GPS 좌표와 함께 PostGIS 저장</li>
+      <li style="margin:.3rem 0">기상청 API 데이터 수집 → XGBoost 블랙아이스 위험 예측 및 등급화</li>
+      <li style="margin:.3rem 0">Leaflet.js 지도 위 파손 위치·블랙아이스 위험 구간 레이어 시각화</li>
+      <li style="margin:.3rem 0">Excel / PDF 보고서 자동 생성 (Spring Boot 내장)</li>
+      <li style="margin:.3rem 0">QGIS GeoJSON 내보내기 연동 (qgis_style.qml 스타일 포함)</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">시스템 구조</div>
+  <div class="detail-section-body">
+    Edge 카메라 / 영상 업로드 → <b>FastAPI (YOLOv11 추론)</b> → <b>Spring Boot</b> (결과 저장·집계) → <b>PostgreSQL + PostGIS</b> (공간 DB) → <b>React + Leaflet.js</b> (지도 대시보드)<br>
+    기상 API → <b>FastAPI (XGBoost 예측)</b> → Spring Boot → 블랙아이스 위험 지도 레이어
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="280" fill="#f8fafc" rx="8"/><defs><marker id="ph_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="155" height="20" rx="3" fill="#3b82f6"/><text x="87" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">detection_job</text><rect x="10" y="35" width="155" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="155" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">file_name</text><text x="18" y="75" fill="#374151" font-size="9">status</text><text x="18" y="88" fill="#374151" font-size="9">created_at</text>
+<rect x="215" y="15" width="155" height="20" rx="3" fill="#3b82f6"/><text x="292" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">road_damage</text><rect x="215" y="35" width="155" height="88" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="215" y="15" width="155" height="108" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="223" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="223" y="62" fill="#b45309" font-size="9" font-style="italic">job_id (FK)</text><text x="223" y="75" fill="#374151" font-size="9">lat / lng</text><text x="223" y="88" fill="#374151" font-size="9">damage_type</text><text x="223" y="101" fill="#374151" font-size="9">confidence</text><text x="223" y="114" fill="#374151" font-size="9">bbox</text>
+<rect x="10" y="165" width="155" height="20" rx="3" fill="#10b981"/><text x="87" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">weather_log</text><rect x="10" y="185" width="155" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="155" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#374151" font-size="9">station</text><text x="18" y="225" fill="#374151" font-size="9">temp / humidity</text><text x="18" y="238" fill="#374151" font-size="9">wind_speed</text><text x="18" y="251" fill="#374151" font-size="9">collected_at</text>
+<rect x="215" y="165" width="155" height="20" rx="3" fill="#10b981"/><text x="292" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">blackice_risk</text><rect x="215" y="185" width="155" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="215" y="165" width="155" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="223" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="223" y="212" fill="#b45309" font-size="9" font-style="italic">weather_log_id (FK)</text><text x="223" y="225" fill="#374151" font-size="9">risk_level</text><text x="223" y="238" fill="#374151" font-size="9">location</text><text x="223" y="251" fill="#374151" font-size="9">predicted_at</text>
+<line x1="165" y1="62" x2="215" y2="62" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ph_a)"/><text x="190" y="57" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="165" y1="212" x2="215" y2="212" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ph_a)"/><text x="190" y="207" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<rect x="390" y="20" width="110" height="52" rx="4" fill="white" stroke="#e5e5ea" stroke-width="1"/><text x="400" y="34" fill="#374151" font-size="9" font-weight="600">범례</text><rect x="398" y="40" width="9" height="9" rx="2" fill="#3b82f6"/><text x="411" y="48" fill="#374151" font-size="8">AI 탐지 테이블</text><rect x="398" y="53" width="9" height="9" rx="2" fill="#10b981"/><text x="411" y="61" fill="#374151" font-size="8">기상 / 예측 테이블</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/ai_porthole_detected/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_porthole_detected',
     testLabel: '기능 테스트 하기'
@@ -1938,7 +1995,67 @@ const projectData = {
     name: 'GPS와 번호판을 활용한 AI기반 차세대 스마트 톨링 시스템',
     desc: 'CRNN 기반 OCR로 차량 번호판을 인식하고, GPS 좌표로 주행 거리를 계산하여 자동으로 통행료를 부과하는 차세대 하이패스 대안 시스템입니다. Jetson 엣지 디바이스에서 실시간 추론을 수행하고, 웹 대시보드에서 통행 내역과 요금 산정 과정을 확인할 수 있습니다.',
     tags: ['CRNN','OCR','Jetson','FastAPI','Vue.js'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    고속도로 진입·출구에서 <b>CRNN + CTC</b> 기반 OCR로 번호판을 인식하고, <b>GPS 좌표 기반 주행 거리 계산</b>으로 통행료를 자동 부과하는 차세대 스마트 톨링 시스템입니다.
+    <b>Jetson 엣지</b> 디바이스에서 실시간 추론을 수행하며, <b>운영 현황 RAG 챗봇</b>(Ollama + pgvector)이 탑재되어 정산·통행·장비 상태 등 운영 질의에 자동 응답합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">AI 모델</td><td>YOLO (번호판 탐지), CRNN + CTC (OCR), Best-Fit 알고리즘</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Edge</td><td>Jetson Nano, FastAPI (엣지 추론 서버), Raspberry Pi</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Spring Boot + JPA, PostgreSQL</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3 (통합 관제 대시보드)</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">챗봇</td><td>Flask + PostgreSQL(pgvector) + Ollama(RAG) — 운영 현황 질의응답</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>번호판 인식:</b> Jetson → YOLO 탐지 → CRNN OCR → Best-Fit → 서버 전송 (Protobuf)</li>
+      <li style="margin:.3rem 0"><b>자동 요금 부과:</b> GPS 진입·출구 좌표로 주행 거리 계산 → 구간별 통행료 자동 산정</li>
+      <li style="margin:.3rem 0"><b>웹 대시보드:</b> 통행 이벤트, GPS 영역, 장비 상태, 요금 내역, 정산 보류 현황 조회</li>
+      <li style="margin:.3rem 0"><b>RAG 챗봇:</b> 정산 보류·통행 이벤트·카메라 수신 지연·장비 상태 등 운영 질문에 자동 응답</li>
+      <li style="margin:.3rem 0">YOLO 50K pilot 학습 (AI Hub 901K frames 서브셋, RTX 3080 학습)</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">시스템 흐름</div>
+  <div class="detail-section-body">
+    카메라 → <b>Jetson (YOLO + CRNN OCR)</b> → Protobuf 전송 → <b>Spring Boot</b> (통행 이벤트 저장) → <b>Vue.js 대시보드</b><br>
+    GPS 엣지 → 거리 계산 → 요금 부과 → DB 정산 처리<br>
+    운영자 질의 → <b>Flask RAG 챗봇</b> → pgvector 검색 + Ollama 응답 생성
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 285" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="285" fill="#f8fafc" rx="8"/><defs><marker id="tl_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="75" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">vehicle</text><rect x="10" y="35" width="130" height="49" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="130" height="69" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">plate_text</text><text x="18" y="75" fill="#374151" font-size="9">vehicle_type</text>
+<rect x="185" y="15" width="140" height="20" rx="3" fill="#3b82f6"/><text x="255" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">passage_event</text><rect x="185" y="35" width="140" height="88" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="15" width="140" height="108" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="193" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="62" fill="#b45309" font-size="9" font-style="italic">vehicle_id (FK)</text><text x="193" y="75" fill="#b45309" font-size="9" font-style="italic">device_id (FK)</text><text x="193" y="88" fill="#374151" font-size="9">plate_text</text><text x="193" y="101" fill="#374151" font-size="9">ocr_confidence</text><text x="193" y="114" fill="#374151" font-size="9">event_time</text>
+<rect x="370" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="435" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">toll_charge</text><rect x="370" y="35" width="130" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="370" y="15" width="130" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="378" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="378" y="62" fill="#b45309" font-size="9" font-style="italic">vehicle_id (FK)</text><text x="378" y="75" fill="#374151" font-size="9">distance (km)</text><text x="378" y="88" fill="#374151" font-size="9">amount</text><text x="378" y="101" fill="#374151" font-size="9">charged_at</text>
+<rect x="10" y="165" width="130" height="20" rx="3" fill="#6366f1"/><text x="75" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">edge_device</text><rect x="10" y="185" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="130" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#374151" font-size="9">device_code</text><text x="18" y="225" fill="#374151" font-size="9">location</text><text x="18" y="238" fill="#374151" font-size="9">status</text>
+<rect x="185" y="165" width="140" height="20" rx="3" fill="#6366f1"/><text x="255" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">gps_track</text><rect x="185" y="185" width="140" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="165" width="140" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="193" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="212" fill="#b45309" font-size="9" font-style="italic">vehicle_id (FK)</text><text x="193" y="225" fill="#374151" font-size="9">lat / lng</text><text x="193" y="238" fill="#374151" font-size="9">recorded_at</text>
+<line x1="140" y1="56" x2="185" y2="56" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#tl_a)"/><text x="162" y="51" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="325" y1="56" x2="370" y2="56" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#tl_a)"/><text x="347" y="51" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M75,84 L75,140 L255,140 L255,165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#tl_a)" stroke-dasharray="4,3"/>
+<path d="M140,210 L185,210" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#tl_a)"/><text x="162" y="205" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://github.com/ajh0105',
     testUrl: null
   },
@@ -1947,7 +2064,69 @@ const projectData = {
     name: 'E-pit AI 기반 스마트 충전소 통합 관제 시스템',
     desc: '현대차그룹 E-pit 충전 네트워크를 대상으로 한 통합 관제 플랫폼입니다. YOLOv8로 충전소 불법주차를 탐지하고, LSTM 기반 고장 예측(PHM)으로 설비 점검 시점을 예측하며, XGBoost로 주변 교통 위험도를 산출합니다. STOMP WebSocket으로 실시간 데이터를 대시보드에 푸시합니다.',
     tags: ['YOLOv8','LSTM','FastAPI','Spring Boot','Vue.js','ECharts','Docker'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    현대차그룹 <b>E-pit 초고속 충전 네트워크</b>를 위한 AI 기반 통합 관제 플랫폼입니다.
+    엣지 카메라(Raspberry Pi)에서 수집한 영상과 Modbus 센서 데이터를 AI 서버에서 실시간 분석하고,
+    <b>STOMP WebSocket</b>으로 대시보드에 즉시 반영합니다. JWT 인증과 역할별 권한 제어(OPERATOR / ADMIN)를 적용했습니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">AI Server</td><td>FastAPI, YOLOv8 (불법주차), LSTM·PyTorch (PHM 고장예측), XGBoost (교통위험도)</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Spring Boot 3.2, JPA, Spring Security 6, WebSocket(STOMP), Redis 7, PostgreSQL 16</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3, Pinia, TypeScript, Element Plus, ECharts</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Edge</td><td>Raspberry Pi + PiCamera2, pymodbus (Modbus 센서 수집)</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Infra</td><td>Docker Compose, Nginx (리버스 프록시)</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>불법주차 감지:</b> 엣지 카메라 → YOLOv8 차량 감지 → 불법주차 이벤트 → STOMP 실시간 알림</li>
+      <li style="margin:.3rem 0"><b>PHM 고장 예측:</b> Modbus 센서 → LSTM → 이상 징후 감지 → 예방점검 알림 + ECharts 트렌드 차트</li>
+      <li style="margin:.3rem 0"><b>교통 위험도:</b> 교통 데이터 → XGBoost → 요인별 위험 지수 → 대시보드 시각화</li>
+      <li style="margin:.3rem 0"><b>통합 대시보드:</b> 충전소 KPI, 알림 센터, PHM 모니터, 위반 이력, 충전기 상태 실시간 관리</li>
+      <li style="margin:.3rem 0">PHM 로그 기간 선택(일간/주간/월간) + CSV 내보내기, 위반·알림 필터/정렬 기능</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD 주요 테이블</div>
+  <div class="detail-section-body">
+    station (충전소) · charger (충전기) · violation (불법주차 위반) · phm_sensor_log (센서 시계열) · phm_prediction (고장 예측) · traffic_risk (교통 위험도) · alert (알림) · member (사용자)
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 295" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="295" fill="#f8fafc" rx="8"/><defs><marker id="ep_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="145" height="20" rx="3" fill="#3b82f6"/><text x="82" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">station</text><rect x="10" y="35" width="145" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="145" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">name</text><text x="18" y="75" fill="#374151" font-size="9">address</text><text x="18" y="88" fill="#374151" font-size="9">status</text>
+<rect x="185" y="15" width="140" height="20" rx="3" fill="#3b82f6"/><text x="255" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">charger</text><rect x="185" y="35" width="140" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="15" width="140" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="193" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="62" fill="#b45309" font-size="9" font-style="italic">station_id (FK)</text><text x="193" y="75" fill="#374151" font-size="9">type</text><text x="193" y="88" fill="#374151" font-size="9">status</text>
+<rect x="360" y="15" width="140" height="20" rx="3" fill="#6366f1"/><text x="430" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">alert</text><rect x="360" y="35" width="140" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="360" y="15" width="140" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="368" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="368" y="62" fill="#b45309" font-size="9" font-style="italic">station_id (FK)</text><text x="368" y="75" fill="#374151" font-size="9">type</text><text x="368" y="88" fill="#374151" font-size="9">is_read</text>
+<rect x="10" y="165" width="145" height="20" rx="3" fill="#f59e0b"/><text x="82" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">violation</text><rect x="10" y="185" width="145" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="145" height="95" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#b45309" font-size="9" font-style="italic">station_id (FK)</text><text x="18" y="225" fill="#374151" font-size="9">image_url</text><text x="18" y="238" fill="#374151" font-size="9">resolved</text><text x="18" y="251" fill="#374151" font-size="9">detected_at</text>
+<rect x="185" y="165" width="140" height="20" rx="3" fill="#f59e0b"/><text x="255" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">phm_prediction</text><rect x="185" y="185" width="140" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="165" width="140" height="95" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="193" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="212" fill="#b45309" font-size="9" font-style="italic">charger_id (FK)</text><text x="193" y="225" fill="#374151" font-size="9">fail_prob</text><text x="193" y="238" fill="#374151" font-size="9">predicted_part</text><text x="193" y="251" fill="#374151" font-size="9">predicted_at</text>
+<rect x="360" y="165" width="140" height="20" rx="3" fill="#f59e0b"/><text x="430" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">traffic_risk</text><rect x="360" y="185" width="140" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="360" y="165" width="140" height="82" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="368" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="368" y="212" fill="#b45309" font-size="9" font-style="italic">station_id (FK)</text><text x="368" y="225" fill="#374151" font-size="9">risk_score</text><text x="368" y="238" fill="#374151" font-size="9">analyzed_at</text>
+<line x1="155" y1="56" x2="185" y2="56" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ep_a)"/><text x="170" y="51" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M82,97 L82,140 L82,165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#ep_a)"/>
+<path d="M255,97 L255,140 L255,165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#ep_a)"/>
+<path d="M430,97 L430,140 L430,165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#ep_a)"/>
+<text x="82" y="136" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text><text x="255" y="136" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text><text x="430" y="136" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/single_portfolio_epit/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_e_pit',
     testLabel: '기능 테스트 하기'
@@ -1957,7 +2136,68 @@ const projectData = {
     name: '차세대 스마트 톨링 시스템 예지보전 구축',
     desc: '톨링 장비(카메라, 센서)에서 수집한 운영 데이터를 기반으로 AI 고장 예측 모델을 구축했습니다. 장비 이상 징후를 사전에 감지해 예지보전(Predictive Maintenance)을 가능하게 하는 웹 대시보드를 제공합니다.',
     tags: ['Python','FastAPI','Vue.js','Chart.js'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    스마트 톨링의 <b>전방·후방 카메라 OCR 인식 품질</b>을 상호 비교·분석하여 카메라 이상 징후를 조기 탐지하는 예지보전 플랫폼입니다.
+    기존 Best-Fit 통행 이벤트 데이터를 원천으로 활용하며, <b>FastAPI</b>가 시계열 품질 데이터를 분석해 <b>Health Score</b>와 위험 등급을 산출합니다.
+    시연 환경에서는 샘플 로그를 사용하고, 운영 환경에서는 Jetson 엣지와 Protobuf 연동으로 확장 가능합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">AI 분석</td><td>FastAPI + Python — 시계열 품질 분석, Health Score 산출</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Spring Boot + JPA — 통행 이벤트 저장, 전후방 매칭, 알림 관리</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3 — 예지보전 탭, 카메라 Health 대시보드</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL — 통행 이벤트, 품질 지표, 분석 결과, 알림 이력</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>품질 수집:</b> 전방·후방 카메라 OCR 신뢰도, 인식 성공률, 미검출률, 전후방 일치율 집계</li>
+      <li style="margin:.3rem 0"><b>AI 분석:</b> FastAPI 시계열 품질 분석 → Health Score + NORMAL / WARNING / CRITICAL 등급</li>
+      <li style="margin:.3rem 0"><b>예상 원인 제공:</b> 이상 징후 유형별 원인 분류 + 권장 점검 항목 자동 제시</li>
+      <li style="margin:.3rem 0"><b>알림 관리:</b> 이상 알림 목록·상세·처리 상태 변경 (3초 이내 응답 목표)</li>
+      <li style="margin:.3rem 0">카메라별 품질 추세 그래프, 전후방 비교 결과 시각화</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD 주요 테이블</div>
+  <div class="detail-section-body">
+    camera_device (카메라 정보) · camera_lane_mapping (카메라-차로 매핑) · passage_event (Best-Fit 통행 이벤트) · camera_compare_result (전후방 비교) · camera_quality_metric (시계열 품질 지표) · pdm_analysis_result (예지보전 분석 결과) · maintenance_alert (이상 알림)
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 305" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="305" fill="#f8fafc" rx="8"/><defs><marker id="pm_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="145" height="20" rx="3" fill="#3b82f6"/><text x="82" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">camera_device</text><rect x="10" y="35" width="145" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="145" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">camera_code</text><text x="18" y="75" fill="#374151" font-size="9">direction (FRONT/REAR)</text><text x="18" y="88" fill="#374151" font-size="9">location_name</text><text x="18" y="101" fill="#374151" font-size="9">is_active</text>
+<rect x="185" y="15" width="145" height="20" rx="3" fill="#3b82f6"/><text x="257" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">passage_event</text><rect x="185" y="35" width="145" height="88" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="15" width="145" height="108" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="193" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="62" fill="#b45309" font-size="9" font-style="italic">device_id (FK)</text><text x="193" y="75" fill="#374151" font-size="9">plate_text</text><text x="193" y="88" fill="#374151" font-size="9">plate_confidence</text><text x="193" y="101" fill="#374151" font-size="9">event_status</text><text x="193" y="114" fill="#374151" font-size="9">event_time</text>
+<rect x="360" y="15" width="140" height="20" rx="3" fill="#6366f1"/><text x="430" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">cam_compare</text><rect x="360" y="35" width="140" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="360" y="15" width="140" height="95" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="368" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="368" y="62" fill="#b45309" font-size="9" font-style="italic">front_event_id (FK)</text><text x="368" y="75" fill="#b45309" font-size="9" font-style="italic">rear_event_id (FK)</text><text x="368" y="88" fill="#374151" font-size="9">match_result</text><text x="368" y="101" fill="#374151" font-size="9">compared_at</text>
+<rect x="10" y="175" width="145" height="20" rx="3" fill="#10b981"/><text x="82" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">quality_metric</text><rect x="10" y="195" width="145" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="175" width="145" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="18" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="222" fill="#b45309" font-size="9" font-style="italic">camera_id (FK)</text><text x="18" y="235" fill="#374151" font-size="9">success_rate</text><text x="18" y="248" fill="#374151" font-size="9">confidence_avg</text><text x="18" y="261" fill="#374151" font-size="9">measured_at</text>
+<rect x="185" y="175" width="145" height="20" rx="3" fill="#10b981"/><text x="257" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">pdm_analysis</text><rect x="185" y="195" width="145" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="175" width="145" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="193" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="222" fill="#b45309" font-size="9" font-style="italic">camera_id (FK)</text><text x="193" y="235" fill="#374151" font-size="9">health_score</text><text x="193" y="248" fill="#374151" font-size="9">risk_level</text><text x="193" y="261" fill="#374151" font-size="9">analyzed_at</text>
+<rect x="360" y="175" width="140" height="20" rx="3" fill="#10b981"/><text x="430" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">maint_alert</text><rect x="360" y="195" width="140" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="360" y="175" width="140" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="368" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="368" y="222" fill="#b45309" font-size="9" font-style="italic">camera_id (FK)</text><text x="368" y="235" fill="#374151" font-size="9">alert_type</text><text x="368" y="248" fill="#374151" font-size="9">status</text><text x="368" y="261" fill="#374151" font-size="9">created_at</text>
+<path d="M82,110 L82,148 L82,175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#pm_a)"/>
+<path d="M82,110 L82,148 L257,148 L257,175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#pm_a)"/>
+<path d="M82,110 L82,148 L430,148 L430,175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#pm_a)"/>
+<line x1="330" y1="62" x2="360" y2="62" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#pm_a)"/>
+<text x="82" y="145" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://github.com/ajh0105',
     testUrl: null,
     testLabel: '기능 테스트 하기'
@@ -1967,7 +2207,66 @@ const projectData = {
     name: 'AI 기반 교통 분석 플랫폼',
     desc: 'YOLO 기반 차량 탐지 모델로 도로 영상에서 차량 흐름과 혼잡도를 분석합니다. Spring Boot 백엔드가 분석 결과를 저장하고, Vue.js 프론트엔드에서 시간대별 교통량과 혼잡 구간을 시각화합니다.',
     tags: ['YOLOv8','Python','Spring Boot','Vue.js'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    교통 영상을 업로드하면 <b>YOLOv8</b>이 차종별 차량을 탐지·계수하고, <b>GPT-4o + LangChain</b>이 교통 상황을 자연어 리포트로 생성하는 스마트 교통 분석 플랫폼입니다.
+    <b>WebSocket</b>으로 분석 진행 상황을 실시간 스트리밍하며, Vue.js 대시보드에서 시간대별 교통량 및 혼잡도 통계를 시각화합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">AI</td><td>YOLOv8n (차량 탐지·계수), OpenAI GPT-4o + LangChain (자연어 리포트)</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Python 3.11, FastAPI, SQLAlchemy, WebSocket</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3, Pinia, TailwindCSS</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL + Redis</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Infra</td><td>Docker Compose</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>영상 업로드 분석:</b> 교통 영상 업로드 → YOLOv8 차량 탐지 → 차종별/시간대별 교통량 집계</li>
+      <li style="margin:.3rem 0"><b>실시간 스트림:</b> WebSocket으로 분석 진행 상황 실시간 전송 (프레임별 탐지 결과)</li>
+      <li style="margin:.3rem 0"><b>AI 리포트:</b> GPT-4o + LangChain으로 교통 상황 자연어 요약 및 혼잡 원인 분석</li>
+      <li style="margin:.3rem 0"><b>대시보드:</b> 시간대별 교통량 차트, 혼잡도 히트맵, 분석 이력 조회</li>
+      <li style="margin:.3rem 0">분석 결과 통계 API — 시간대별 집계, 혼잡 구간 식별</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 API</div>
+  <div class="detail-section-body">
+    <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">POST /api/v1/analysis/upload</code> — 교통 영상 업로드<br>
+    <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">GET /api/v1/analysis/{id}/stats</code> — 탐지 통계<br>
+    <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">GET /api/v1/dashboard/hourly</code> — 시간대별 집계<br>
+    <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">WS /ws/analysis/{id}</code> — 실시간 분석 스트림
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="270" fill="#f8fafc" rx="8"/><defs><marker id="tr_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="145" height="20" rx="3" fill="#3b82f6"/><text x="82" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">member</text><rect x="10" y="35" width="145" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="145" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">email</text><text x="18" y="75" fill="#374151" font-size="9">name</text><text x="18" y="88" fill="#374151" font-size="9">role</text>
+<rect x="195" y="15" width="150" height="20" rx="3" fill="#3b82f6"/><text x="270" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">analysis_job</text><rect x="195" y="35" width="150" height="88" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="195" y="15" width="150" height="108" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="203" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="203" y="62" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="203" y="75" fill="#374151" font-size="9">file_name</text><text x="203" y="88" fill="#374151" font-size="9">status</text><text x="203" y="101" fill="#374151" font-size="9">created_at</text><text x="203" y="114" fill="#374151" font-size="9">gpt_report</text>
+<rect x="10" y="165" width="155" height="20" rx="3" fill="#6366f1"/><text x="87" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">vehicle_detection</text><rect x="10" y="185" width="155" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="155" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#b45309" font-size="9" font-style="italic">job_id (FK)</text><text x="18" y="225" fill="#374151" font-size="9">class / confidence</text><text x="18" y="238" fill="#374151" font-size="9">frame_no</text>
+<rect x="200" y="165" width="145" height="20" rx="3" fill="#6366f1"/><text x="272" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">hourly_stat</text><rect x="200" y="185" width="145" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="200" y="165" width="145" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="208" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="208" y="212" fill="#b45309" font-size="9" font-style="italic">job_id (FK)</text><text x="208" y="225" fill="#374151" font-size="9">hour / count</text><text x="208" y="238" fill="#374151" font-size="9">congestion_level</text>
+<line x1="155" y1="57" x2="195" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#tr_a)"/><text x="175" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M230 123 L230 148 L87 148 L87 165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#tr_a)"/>
+<path d="M270 123 L270 148 L272 148 L272 165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#tr_a)"/>
+<text x="150" y="145" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text><text x="310" y="145" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/ai_traffic_platform/#/',
     testUrl: 'https://huggingface.co/spaces/simonahn/ai_traffic',
     testLabel: '기능 테스트 하기'
@@ -1977,7 +2276,58 @@ const projectData = {
     name: 'V사 쇼핑몰 웹 애플리케이션',
     desc: '상품 목록/상세, 장바구니, 결제, 리뷰 기능을 갖춘 이커머스 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 팀 단위 풀스택 개발을 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    팀 단위로 개발한 이커머스 풀스택 웹 애플리케이션입니다. <b>Spring Boot + JPA</b> 백엔드와 <b>Vue.js + Vite</b> 프론트엔드로 구성했으며, 회원 인증부터 상품 관리, 결제, 리뷰, 관리자 기능까지 실제 쇼핑몰 기능 전체를 구현했습니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">Backend</td><td>Spring Boot, JPA (ORM), REST API</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3, Vite, Vue Router, Pinia</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL / MySQL</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능 (Vue 컴포넌트)</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>사용자:</b> Home (메인), Category (카테고리), ProductDetail (상품 상세·리뷰)</li>
+      <li style="margin:.3rem 0"><b>구매 흐름:</b> Cart (장바구니) → CartCheckout → Checkout (결제 완료)</li>
+      <li style="margin:.3rem 0"><b>회원:</b> Register (회원가입), Login (로그인), MyPage (주문 내역·쿠폰)</li>
+      <li style="margin:.3rem 0"><b>관리자:</b> AdminLayout, Dashboard (매출 현황), Members (회원 관리), Orders (주문 처리), Coupons (쿠폰 발급), Board (공지), AdminFaq / AdminInquiry (고객센터)</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="310" fill="#f8fafc" rx="8"/><defs><marker id="vs_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="75" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">member</text><rect x="10" y="35" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="130" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">email</text><text x="18" y="75" fill="#374151" font-size="9">name</text><text x="18" y="88" fill="#374151" font-size="9">role</text>
+<rect x="185" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="250" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">orders</text><rect x="185" y="35" width="130" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="15" width="130" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="193" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="62" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="193" y="75" fill="#374151" font-size="9">total_amount</text><text x="193" y="88" fill="#374151" font-size="9">status</text><text x="193" y="101" fill="#374151" font-size="9">ordered_at</text>
+<rect x="365" y="15" width="135" height="20" rx="3" fill="#6366f1"/><text x="432" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">order_item</text><rect x="365" y="35" width="135" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="365" y="15" width="135" height="95" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="373" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="373" y="62" fill="#b45309" font-size="9" font-style="italic">order_id (FK)</text><text x="373" y="75" fill="#b45309" font-size="9" font-style="italic">product_id (FK)</text><text x="373" y="88" fill="#374151" font-size="9">qty</text><text x="373" y="101" fill="#374151" font-size="9">price</text>
+<rect x="10" y="175" width="130" height="20" rx="3" fill="#f59e0b"/><text x="75" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">product</text><rect x="10" y="195" width="130" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="175" width="130" height="95" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="18" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="222" fill="#b45309" font-size="9" font-style="italic">category_id (FK)</text><text x="18" y="235" fill="#374151" font-size="9">name</text><text x="18" y="248" fill="#374151" font-size="9">price / stock</text><text x="18" y="261" fill="#374151" font-size="9">img_url</text>
+<rect x="185" y="175" width="130" height="20" rx="3" fill="#f59e0b"/><text x="250" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">cart_item</text><rect x="185" y="195" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="185" y="175" width="130" height="82" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="193" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="193" y="222" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="193" y="235" fill="#b45309" font-size="9" font-style="italic">product_id (FK)</text><text x="193" y="248" fill="#374151" font-size="9">qty</text>
+<rect x="365" y="175" width="135" height="20" rx="3" fill="#f59e0b"/><text x="432" y="189" text-anchor="middle" fill="white" font-size="10" font-weight="600">review</text><rect x="365" y="195" width="135" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="365" y="175" width="135" height="82" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="373" y="209" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="373" y="222" fill="#b45309" font-size="9" font-style="italic">product_id (FK)</text><text x="373" y="235" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="373" y="248" fill="#374151" font-size="9">rating / content</text>
+<line x1="140" y1="57" x2="185" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#vs_a)"/><text x="162" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="315" y1="57" x2="365" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#vs_a)"/><text x="340" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M75 97 L75 148 L250 148 L250 175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#vs_a)"/>
+<path d="M75 97 L75 175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#vs_a)" stroke-dasharray="4,3"/>
+<path d="M75 97 L75 148 L432 148 L432 175" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#vs_a)" stroke-dasharray="4,3"/>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/layer_4_ventalize/#/',
     testUrl: null
   },
@@ -1986,7 +2336,56 @@ const projectData = {
     name: 'M사 쇼핑몰 웹 애플리케이션',
     desc: '상품 관리, 장바구니, 결제 플로우를 구현한 이커머스 웹 애플리케이션입니다. Spring Boot + JPA 백엔드와 Vue.js + Vite 프론트엔드로 개인 풀스택 프로젝트로 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','Vite'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    무신사(Musinsa) 스타일 패션 쇼핑몰을 개인 풀스택 프로젝트로 구현했습니다. <b>Spring Boot + JPA</b> 백엔드와 <b>Vue.js + Vite</b> 프론트엔드로 상품 목록부터 결제까지의 전체 구매 플로우를 직접 설계·개발했습니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">Backend</td><td>Spring Boot, JPA (ORM), REST API, Docker</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>Vue.js 3, Vite, Vue Router, Pinia</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL / MySQL, Docker Compose</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>상품 탐색:</b> 메인 페이지 상품 노출, 카테고리별 필터링, 상품 상세 페이지</li>
+      <li style="margin:.3rem 0"><b>구매 플로우:</b> 장바구니 담기 → 수량/옵션 변경 → 결제 정보 입력 → 주문 완료</li>
+      <li style="margin:.3rem 0"><b>회원 기능:</b> 회원가입, 로그인 (JWT 인증), 마이페이지 — 주문 내역 조회</li>
+      <li style="margin:.3rem 0"><b>관리자:</b> 상품 등록·수정·삭제, 주문 상태 관리, 회원 관리</li>
+      <li style="margin:.3rem 0">Docker Compose로 전체 스택(백엔드 + DB) 컨테이너화</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="280" fill="#f8fafc" rx="8"/><defs><marker id="ms_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="135" height="20" rx="3" fill="#3b82f6"/><text x="77" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">member</text><rect x="10" y="35" width="135" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="135" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">email</text><text x="18" y="75" fill="#374151" font-size="9">name</text><text x="18" y="88" fill="#374151" font-size="9">role</text>
+<rect x="190" y="15" width="135" height="20" rx="3" fill="#3b82f6"/><text x="257" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">orders</text><rect x="190" y="35" width="135" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="15" width="135" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="198" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="62" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="198" y="75" fill="#374151" font-size="9">total_amount</text><text x="198" y="88" fill="#374151" font-size="9">status</text><text x="198" y="101" fill="#374151" font-size="9">ordered_at</text>
+<rect x="370" y="15" width="130" height="20" rx="3" fill="#6366f1"/><text x="435" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">order_item</text><rect x="370" y="35" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="370" y="15" width="130" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="378" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="378" y="62" fill="#b45309" font-size="9" font-style="italic">order_id (FK)</text><text x="378" y="75" fill="#b45309" font-size="9" font-style="italic">product_id (FK)</text><text x="378" y="88" fill="#374151" font-size="9">qty / price</text>
+<rect x="10" y="170" width="135" height="20" rx="3" fill="#f59e0b"/><text x="77" y="184" text-anchor="middle" fill="white" font-size="10" font-weight="600">product</text><rect x="10" y="190" width="135" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="170" width="135" height="95" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="18" y="204" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="217" fill="#b45309" font-size="9" font-style="italic">category_id (FK)</text><text x="18" y="230" fill="#374151" font-size="9">name</text><text x="18" y="243" fill="#374151" font-size="9">price / stock</text><text x="18" y="256" fill="#374151" font-size="9">img_url</text>
+<rect x="190" y="170" width="135" height="20" rx="3" fill="#f59e0b"/><text x="257" y="184" text-anchor="middle" fill="white" font-size="10" font-weight="600">cart_item</text><rect x="190" y="190" width="135" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="170" width="135" height="82" rx="3" fill="none" stroke="#fde68a" stroke-width="1.5"/>
+<text x="198" y="204" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="217" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="198" y="230" fill="#b45309" font-size="9" font-style="italic">product_id (FK)</text><text x="198" y="243" fill="#374151" font-size="9">qty</text>
+<line x1="145" y1="57" x2="190" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ms_a)"/><text x="167" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="325" y1="57" x2="370" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#ms_a)"/><text x="347" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M77 97 L77 140 L257 140 L257 170" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#ms_a)"/>
+<path d="M77 97 L77 170" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#ms_a)" stroke-dasharray="4,3"/>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/shop_musinsa/',
     testUrl: null
   },
@@ -1995,7 +2394,57 @@ const projectData = {
     name: '부산시 문화관광 웹 애플리케이션',
     desc: '부산시의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 팀 단위 풀스택 개발을 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    팀 단위로 개발한 부산시 공식 문화·관광 정보 플랫폼입니다. 부산 16개 구·군별 관광지, 맛집, 숙박, 이벤트 정보를 제공하며, 커뮤니티 게시판과 회원 인증 기능을 포함합니다.
+    <b>Spring Boot + JPA</b> 백엔드와 <b>PostgreSQL</b>로 관광 데이터를 관리하고, 프론트엔드는 정적 HTML / CSS 기반으로 구성했습니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">Backend</td><td>Spring Boot, JPA (ORM), REST API</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">Frontend</td><td>HTML / CSS / Vanilla JS (멀티 서브페이지 구조)</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Database</td><td>PostgreSQL</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 페이지 / 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>관광지:</b> 구·군별 명소 카테고리 (sub_area_1~16) — 해운대, 광안리, 태종대 등 지역 명소</li>
+      <li style="margin:.3rem 0"><b>맛집·숙박:</b> 부산 특색 음식점 및 숙박 시설 정보</li>
+      <li style="margin:.3rem 0"><b>이벤트·행사:</b> 부산시 문화 이벤트 및 축제 일정</li>
+      <li style="margin:.3rem 0"><b>커뮤니티:</b> 게시판 (board_1_1.html) — 여행 후기, 공지사항</li>
+      <li style="margin:.3rem 0"><b>회원:</b> 로그인 / 회원가입 (login.html, signup.html)</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="270" fill="#f8fafc" rx="8"/><defs><marker id="bs_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="135" height="20" rx="3" fill="#3b82f6"/><text x="77" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">member</text><rect x="10" y="35" width="135" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="135" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">email</text><text x="18" y="75" fill="#374151" font-size="9">name</text><text x="18" y="88" fill="#374151" font-size="9">role</text>
+<rect x="190" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="255" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">board</text><rect x="190" y="35" width="130" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="15" width="130" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="198" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="62" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="198" y="75" fill="#374151" font-size="9">title</text><text x="198" y="88" fill="#374151" font-size="9">content</text><text x="198" y="101" fill="#374151" font-size="9">view_cnt</text>
+<rect x="370" y="15" width="130" height="20" rx="3" fill="#6366f1"/><text x="435" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">comment</text><rect x="370" y="35" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="370" y="15" width="130" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="378" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="378" y="62" fill="#b45309" font-size="9" font-style="italic">board_id (FK)</text><text x="378" y="75" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="378" y="88" fill="#374151" font-size="9">content</text>
+<rect x="10" y="165" width="135" height="20" rx="3" fill="#10b981"/><text x="77" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">area</text><rect x="10" y="185" width="135" height="49" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="135" height="69" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#374151" font-size="9">name</text><text x="18" y="225" fill="#374151" font-size="9">district</text>
+<rect x="190" y="165" width="140" height="20" rx="3" fill="#10b981"/><text x="260" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">tourist_spot</text><rect x="190" y="185" width="140" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="165" width="140" height="95" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="198" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="212" fill="#b45309" font-size="9" font-style="italic">area_id (FK)</text><text x="198" y="225" fill="#374151" font-size="9">name / category</text><text x="198" y="238" fill="#374151" font-size="9">description</text><text x="198" y="251" fill="#374151" font-size="9">img_url</text>
+<line x1="145" y1="57" x2="190" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#bs_a)"/><text x="167" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="320" y1="57" x2="370" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#bs_a)"/><text x="345" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="145" y1="200" x2="190" y2="200" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#bs_a)"/><text x="167" y="195" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M77 97 L77 148 L255 148 L255 165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#bs_a)" stroke-dasharray="4,3"/>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://jihwana120.github.io/',
     testUrl: null
   },
@@ -2004,7 +2453,64 @@ const projectData = {
     name: '청도군 문화관광 웹 애플리케이션',
     desc: '청도군의 문화·관광 정보를 제공하는 플랫폼입니다. Spring Boot + JPA 백엔드와 Vue.js 프론트엔드, PostgreSQL 데이터베이스로 개인 풀스택 프로젝트로 진행했습니다.',
     tags: ['Spring Boot','JPA','Vue.js','PostgreSQL'],
-    detail: null,
+    detail: `
+<div class="detail-section">
+  <div class="detail-section-title">프로젝트 개요</div>
+  <div class="detail-section-body">
+    경북 청도군 문화관광 웹사이트를 <b>순수 HTML / CSS / Vanilla JS</b>로 전면 리뉴얼한 개인 프로젝트입니다. 프레임워크 없이 <b>CSS Custom Properties 기반 디자인 토큰 시스템</b>을 직접 설계해 색상·타이포그래피·간격·모션 변수를 체계화했습니다.
+    반응형 5단계(1280 / 1024 / 820 / 640 / 480px)를 지원하며, 관광지·맛집·숙박·축제 정보와 커뮤니티 기능을 제공합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">기술 스택</div>
+  <div class="detail-section-body">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93;width:90px">Frontend</td><td>HTML5, CSS Custom Properties (디자인 토큰), Vanilla JS (프레임워크 없음)</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">CSS 구조</td><td>tokens.css (변수) · base.css · components.css · layout.css · home.css · responsive.css</td></tr>
+      <tr style="border-bottom:1px solid #e5e5ea"><td style="padding:5px 0;color:#8e8e93">폰트·아이콘</td><td>Freesentation, GmarketSans, xeicon (xi-*)</td></tr>
+      <tr><td style="padding:5px 0;color:#8e8e93">Backend</td><td>Spring Boot + JPA (백엔드 연동)</td></tr>
+    </table>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">주요 페이지 / 기능</div>
+  <div class="detail-section-body">
+    <ul style="padding-left:1rem;margin:.3rem 0">
+      <li style="margin:.3rem 0"><b>메인(index.html):</b> 히어로 슬라이더, stat-bar, 9그리드 관광지, 축제 그리드, 뉴스 그리드, Quick 링크</li>
+      <li style="margin:.3rem 0"><b>서브페이지:</b> 관광지·맛집·숙박·축제 소개, GNB 드롭다운 네비게이션</li>
+      <li style="margin:.3rem 0"><b>회원:</b> 로그인(log.html), 회원가입(join.html), 마이페이지(member.html)</li>
+      <li style="margin:.3rem 0"><b>기타:</b> 공지사항, 개인정보처리방침, 스타일 가이드(styleguide.html)</li>
+      <li style="margin:.3rem 0">반응형 5단계 — 모바일부터 대형 데스크톱까지 지원</li>
+    </ul>
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">설계 특징</div>
+  <div class="detail-section-body">
+    <b>디자인 토큰(tokens.css)</b>으로 <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">--c-primary:#35528C</code> (청도군 색상), <code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">--c-persimmon:#e8732c</code> (감 테마) 등을 변수화해 전체 UI 일관성을 유지했습니다. 서브페이지는 2단계 상위 경로(<code style="font-size:11px;background:#f2f2f7;padding:2px 5px;border-radius:4px">../../reset.css</code>) CSS 구조를 사용합니다.
+  </div>
+</div>
+<div class="detail-section">
+  <div class="detail-section-title">ERD</div>
+  <div class="detail-section-body">
+<svg viewBox="0 0 510 275" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;border-radius:8px;margin-top:4px"><rect width="510" height="275" fill="#f8fafc" rx="8"/><defs><marker id="cd_a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#94a3b8"/></marker></defs>
+<rect x="10" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="75" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">member</text><rect x="10" y="35" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="15" width="130" height="82" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="18" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="62" fill="#374151" font-size="9">email</text><text x="18" y="75" fill="#374151" font-size="9">name</text><text x="18" y="88" fill="#374151" font-size="9">role</text>
+<rect x="190" y="15" width="130" height="20" rx="3" fill="#3b82f6"/><text x="255" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">post</text><rect x="190" y="35" width="130" height="75" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="15" width="130" height="95" rx="3" fill="none" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="198" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="62" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="198" y="75" fill="#374151" font-size="9">title</text><text x="198" y="88" fill="#374151" font-size="9">content</text><text x="198" y="101" fill="#374151" font-size="9">view_cnt</text>
+<rect x="370" y="15" width="130" height="20" rx="3" fill="#6366f1"/><text x="435" y="29" text-anchor="middle" fill="white" font-size="10" font-weight="600">comment</text><rect x="370" y="35" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="370" y="15" width="130" height="82" rx="3" fill="none" stroke="#c7d2fe" stroke-width="1.5"/>
+<text x="378" y="49" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="378" y="62" fill="#b45309" font-size="9" font-style="italic">post_id (FK)</text><text x="378" y="75" fill="#b45309" font-size="9" font-style="italic">member_id (FK)</text><text x="378" y="88" fill="#374151" font-size="9">content</text>
+<rect x="10" y="165" width="135" height="20" rx="3" fill="#10b981"/><text x="77" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">tourist_spot</text><rect x="10" y="185" width="135" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="10" y="165" width="135" height="82" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="18" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="18" y="212" fill="#374151" font-size="9">category</text><text x="18" y="225" fill="#374151" font-size="9">name / address</text><text x="18" y="238" fill="#374151" font-size="9">img_url</text>
+<rect x="190" y="165" width="130" height="20" rx="3" fill="#10b981"/><text x="255" y="179" text-anchor="middle" fill="white" font-size="10" font-weight="600">festival</text><rect x="190" y="185" width="130" height="62" fill="white" stroke="#e5e5ea" stroke-width="1"/><rect x="190" y="165" width="130" height="82" rx="3" fill="none" stroke="#a7f3d0" stroke-width="1.5"/>
+<text x="198" y="199" fill="#1e40af" font-size="9" font-weight="600">id (PK)</text><text x="198" y="212" fill="#374151" font-size="9">name</text><text x="198" y="225" fill="#374151" font-size="9">start_date</text><text x="198" y="238" fill="#374151" font-size="9">end_date</text>
+<line x1="140" y1="57" x2="190" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#cd_a)"/><text x="165" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<line x1="320" y1="57" x2="370" y2="57" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#cd_a)"/><text x="345" y="52" text-anchor="middle" fill="#6b7280" font-size="8">1:N</text>
+<path d="M75 97 L75 148 L255 148 L255 165" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#cd_a)" stroke-dasharray="4,3"/>
+<text x="165" y="145" text-anchor="middle" fill="#6b7280" font-size="8">1:N (게시글 작성)</text>
+</svg>
+  </div>
+</div>`,
     liveUrl: 'https://ajh0105.github.io/web01/',
     testUrl: null
   }
