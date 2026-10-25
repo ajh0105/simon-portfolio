@@ -1471,7 +1471,7 @@ textarea.ios-input { resize: none; height: 80px; }
                   <div class="cl-text"><div class="cl-type">Email</div><div class="cl-val">ams01055@gmail.com</div></div>
                   <div class="cl-arr">›</div>
                 </a>
-                <a href="#" class="cont-link">
+                <a href="https://github.com/ajh0105" target="_blank" rel="noopener" class="cont-link">
                   <div class="cl-icon">🐙</div>
                   <div class="cl-text"><div class="cl-type">GitHub</div><div class="cl-val">github.com/ajh0105</div></div>
                   <div class="cl-arr">›</div>
@@ -1481,17 +1481,15 @@ textarea.ios-input { resize: none; height: 80px; }
                   <div class="cl-text"><div class="cl-type">수료 과정</div><div class="cl-val">MBC 컴퓨터 학원 AI 풀스택</div></div>
                   <div class="cl-arr">›</div>
                 </a>
-                <a href="#" class="cont-link">
-                  <div class="cl-icon">📄</div>
-                  <div class="cl-text"><div class="cl-type">Resume</div><div class="cl-val">Download PDF</div></div>
-                  <div class="cl-arr">›</div>
-                </a>
               </div>
             </div>
             <div class="cont-form">
               <div class="cf-title">프로젝트 · 채용 문의</div>
-              <!-- TODO: formspree.io에서 생성한 endpoint로 교체 (예: https://formspree.io/f/xxxxxxxx) -->
-              <form id="contactForm" action="https://formspree.io/f/REPLACE_ME" method="POST">
+              <!-- FormSubmit.co: 별도 가입 없이 폼 내용을 아래 주소로 메일 전송. 최초 1회 수신 메일에서 Activate 필요 -->
+              <form id="contactForm" action="https://formsubmit.co/ajax/ams01055@gmail.com" method="POST">
+                <input type="hidden" name="_subject" value="[포트폴리오] 새 문의가 도착했습니다">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                 <div class="ios-field-group">
                   <label class="ios-label">이름</label>
                   <input class="ios-input" type="text" name="name" placeholder="홍길동" required>
@@ -2644,13 +2642,17 @@ document.addEventListener('keydown', e => {
 });
 
 /* ════════════════════════════
-   CONTACT FORM (Formspree)
+   CONTACT FORM (FormSubmit)
 ════════════════════════════ */
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const form   = e.target;
   const btn    = document.getElementById('contactSubmitBtn');
   const status = document.getElementById('contactStatus');
+  const fail   = function(msg) {
+    status.style.color = '#ff3b30';
+    status.textContent = msg + ' ams01055@gmail.com 으로 직접 보내주셔도 됩니다.';
+  };
 
   btn.disabled = true;
   btn.textContent = '전송 중...';
@@ -2661,20 +2663,17 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     body: new FormData(form),
     headers: { 'Accept': 'application/json' }
   })
-  .then(res => {
-    if (res.ok) {
+  .then(res => res.json().catch(() => ({})).then(data => res.ok && String(data.success) === 'true'))
+  .then(ok => {
+    if (ok) {
       status.style.color = '#1c8a3e';
       status.textContent = '✓ 메시지가 전송되었습니다. 빠르게 답변 드리겠습니다.';
       form.reset();
     } else {
-      status.style.color = '#ff3b30';
-      status.textContent = '✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.';
+      fail('✕ 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
     }
   })
-  .catch(() => {
-    status.style.color = '#ff3b30';
-    status.textContent = '✕ 전송에 실패했습니다. 네트워크를 확인해주세요.';
-  })
+  .catch(() => fail('✕ 전송에 실패했습니다. 네트워크를 확인해주세요.'))
   .finally(() => {
     btn.disabled = false;
     btn.textContent = 'Send Message';
