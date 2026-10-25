@@ -1485,11 +1485,12 @@ textarea.ios-input { resize: none; height: 80px; }
             </div>
             <div class="cont-form">
               <div class="cf-title">프로젝트 · 채용 문의</div>
-              <!-- FormSubmit.co: 별도 가입 없이 폼 내용을 아래 주소로 메일 전송. 최초 1회 수신 메일에서 Activate 필요 -->
-              <form id="contactForm" action="https://formsubmit.co/ajax/ams01055@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="[포트폴리오] 새 문의가 도착했습니다">
-                <input type="hidden" name="_template" value="table">
-                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+              <!-- Web3Forms: 폼 내용을 access_key 에 등록된 메일로 전송 (키는 공개되어도 되는 값) -->
+              <form id="contactForm" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="54eaf19a-42a4-4ef9-9ce3-8b6941f4696e">
+                <input type="hidden" name="subject" value="[포트폴리오] 새 문의가 도착했습니다">
+                <input type="hidden" name="from_name" value="Simon Portfolio">
+                <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
                 <div class="ios-field-group">
                   <label class="ios-label">이름</label>
                   <input class="ios-input" type="text" name="name" placeholder="홍길동" required>
@@ -1500,7 +1501,7 @@ textarea.ios-input { resize: none; height: 80px; }
                 </div>
                 <div class="ios-field-group">
                   <label class="ios-label">문의 유형</label>
-                  <input class="ios-input" type="text" name="subject" placeholder="예: 교통 AI, 채용, 협업 프로젝트">
+                  <input class="ios-input" type="text" name="inquiry_type" placeholder="예: 교통 AI, 채용, 협업 프로젝트">
                 </div>
                 <div class="ios-field-group">
                   <label class="ios-label">상세 내용</label>
@@ -2642,7 +2643,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ════════════════════════════
-   CONTACT FORM (FormSubmit)
+   CONTACT FORM (Web3Forms)
 ════════════════════════════ */
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
