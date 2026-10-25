@@ -484,6 +484,8 @@ input, textarea, [contenteditable] {
   transition: all .2s;
 }
 .proj-row:hover { background: #f0f5ff; border-color: #b8d0ff; }
+.proj-row.private { cursor: var(--cur-arrow), default; }
+.proj-row.private:hover { background: #fff; border-color: #e5e5ea; }
 .pr-icon {
   width: 44px; height: 44px; border-radius: 10px;
   display: flex; align-items: center; justify-content: center;
@@ -498,6 +500,7 @@ input, textarea, [contenteditable] {
 .pi7 { background: linear-gradient(135deg,#e8fef5,#c7fce0); }
 .pi8 { background: linear-gradient(135deg,#fef8e8,#fcedc7); }
 .pi9 { background: linear-gradient(135deg,#fde8fe,#f0c7fc); }
+.pi-private { background: linear-gradient(135deg,#f2f2f7,#e0e0e6); }
 .pr-info {}
 .pr-name { font-size: 13px; font-weight: 700; color: #1d1d1f; margin-bottom: 2px; }
 .pr-desc { font-size: 12px; color: #8e8e93; }
@@ -516,6 +519,7 @@ input, textarea, [contenteditable] {
 .badge-live { background: rgba(52,199,89,.12); color: #1c8a3e; }
 .badge-done { background: rgba(0,122,255,.1); color: #007AFF; }
 .badge-dev  { background: rgba(255,159,10,.12); color: #a05000; }
+.badge-private { background: rgba(142,142,147,.14); color: #6e6e73; }
 
 .pr-btn-group { display: flex; gap: 4px; margin-top: 4px; }
 .pr-btn {
@@ -1038,7 +1042,7 @@ textarea.ios-input { resize: none; height: 80px; }
           <div class="sb-item" id="nav-projects" onclick="switchPane('projects')">
             <span class="sb-icon">🚀</span>
             <span class="sb-name">Projects</span>
-            <span class="sb-badge" id="projCount">9</span>
+            <span class="sb-badge" id="projCount">13</span>
           </div>
           <div class="sb-item" id="nav-skills" onclick="switchPane('skills')">
             <span class="sb-icon">🛠️</span>
@@ -1360,6 +1364,34 @@ textarea.ios-input { resize: none; height: 80px; }
                   <button class="pr-btn pr-btn-live" onclick="event.stopPropagation(); window.open('https://cheongdo.simon-portfolio.site/','_blank')">🔗 Live</button>
                 </div>
               </div>
+            </div>
+            <div class="proj-row private" data-tags="">
+              <div class="pr-icon pi-private">☕</div>
+              <div class="pr-info">
+                <div class="pr-name">[공개 불가] 커피샵 홈페이지 제작(외주 업무)</div>
+              </div>
+              <div class="pr-right"><div class="pr-badge badge-private">🔒 비공개</div></div>
+            </div>
+            <div class="proj-row private" data-tags="">
+              <div class="pr-icon pi-private">📚</div>
+              <div class="pr-info">
+                <div class="pr-name">[공개 불가] LLM-WIKI 구축 플랫폼 프로젝트</div>
+              </div>
+              <div class="pr-right"><div class="pr-badge badge-private">🔒 비공개</div></div>
+            </div>
+            <div class="proj-row private" data-tags="">
+              <div class="pr-icon pi-private">🔒</div>
+              <div class="pr-info">
+                <div class="pr-name">[공개 불가] 외주 업무-1</div>
+              </div>
+              <div class="pr-right"><div class="pr-badge badge-private">🔒 비공개</div></div>
+            </div>
+            <div class="proj-row private" data-tags="">
+              <div class="pr-icon pi-private">🔒</div>
+              <div class="pr-info">
+                <div class="pr-name">[공개 불가] 외주 업무-2</div>
+              </div>
+              <div class="pr-right"><div class="pr-badge badge-private">🔒 비공개</div></div>
             </div>
           </div>
         </div>
